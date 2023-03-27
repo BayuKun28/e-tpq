@@ -9,7 +9,6 @@ class Dashboard extends CI_Controller
         if (!$this->session->userdata('is_logged_in')) {
             redirect('/');
         }
-        $this->load->model('laporan_penjualan_model');
     }
     public function index()
     {
