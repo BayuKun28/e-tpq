@@ -51,7 +51,6 @@ class Pembayaran extends CI_Controller
         );
         $this->db->insert('pembayaran', $data);
         $this->session->set_flashdata('message', 'Berhasil Ditambah');
-        // send text
         
         $namabulan = $this->santri_model->getbulana($bulan)->nama;
         $nohp = $this->santri_model->getwaliwa($idpage)->no_hp;
@@ -63,7 +62,7 @@ class Pembayaran extends CI_Controller
         $to=$nohp;
         $body="Pembayaran Untuk Bulan ".$namabulan." Tahun ".$tahun." Sebesar Rp".$nominal1." Atas Nama Santri ".$santri." Sukses Dibayar Pada ".date('Y-m-d H:i:s')." dengan Keterangan ".$keterangan; 
         $api=$client->sendChatMessage($to,$body);
-        print_r($api);
+        // print_r($api);
 
         // Send Picture
 
@@ -159,7 +158,7 @@ class Pembayaran extends CI_Controller
             if($d->nominal != 0 )
             {
                 $tampilaksi =  '<a href="javascript:void(0)" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modaledit" data-idedit="'.$d->id_pembayaran.'" data-bulanedit="'.$d->bulan.'" data-nominaledit="'.$d->nominal.'" data-keteranganedit="'.$d->keterangan.'" name="edit" id="edit"><i class="fa fa-edit"></i> Edit</a>
-                <a href="'.base_url('Pembayaran/cetakkwitansi?pembayaran=').$d->id_pembayaran.'" target="_blank" class="btn btn-danger btn-sm" name="print" id="print"><i class="fa fa-print"></i> Cetak Kwitansi</a>';
+                <a href="'.base_url('Pembayaran/cetakkwitansi?pembayaran=').$d->id_pembayaran.'" target="_blank" class="btn btn-danger btn-sm" name="print" id="print"><i class="fa fa-print"></i> Cetak Kwitansi</a><a href="'.base_url('Pembayaran/kirimkwitansi?pembayaran=').$d->id_pembayaran.'&idpage='.$d->id_santri.'" class="btn btn-warning btn-sm" name="print" id="print"><i class="fa fa-print"></i> Kirim Kwitansi</a>';
             }else{
                 $tampilaksi =  '<a href="javascript:void(0)" class="btn btn-warning btn-sm" data-toggle="modal" data-target="#modalbayar" data-bulan="'.$d->bulan.'" data-id_bulan="'.$d->id_bulan.'" name="bayar" id="bayar"><i class="fa fa-money-bill-alt"></i> Bayar</a>';
             }
@@ -204,7 +203,7 @@ class Pembayaran extends CI_Controller
         $to=$nohp;
         $body="Pembayaran Untuk Bulan ".$namabulan." Tahun ".$tahun." Atas Nama Santri ".$santri." Telah Di Edit Pada ".date('Y-m-d H:i:s')." Sebesar Rp".$nominal1." dengan Keterangan ".$keterangan; 
         $api=$client->sendChatMessage($to,$body);
-        print_r($api);
+        // print_r($api);
 
         // Send Picture
 
@@ -237,6 +236,46 @@ class Pembayaran extends CI_Controller
         $html = $this->load->view('pembayaran/kwitansi', $data, true);
         $dompdf->load_html($html);
         $dompdf->render();
-        $dompdf->stream('Kwitansi Pembayaran ', array("Attachment" => false));
+        $dompdf->stream('Kwitansi Pembayaran',array("Attachment" => false));
+    }
+
+    public function kirimkwitansi(){
+        $this->load->helper('file'); 
+
+        $id = $this->input->get('pembayaran');
+        $idsantri = $this->input->get('idpage');
+        $data['detail'] = $this->pembayaran_model->kwitansi($id);
+        $data['identitas'] = $this->auth_model->getIdentitas();
+        $filename = base_url('files/pdf/').'kwitansi.pdf';
+
+        $dompdf = new Dompdf();
+        $customPaper = array(0,0,480,240);
+        $msg = $this->load->view('pembayaran/kwitansi', $data, true);
+        $html = mb_convert_encoding($msg, 'HTML-ENTITIES', 'UTF-8');
+        $dompdf->load_html($html); 
+        $dompdf->set_paper($customPaper);
+        $dompdf->render();
+        file_put_contents($filename, $dompdf->output());
+
+        $nohp = $this->santri_model->getwaliwa($idsantri)->no_hp;
+        $santri = $this->santri_model->getwaliwa($idsantri)->namasantri;
+        $tahun = $this->santri_model->getpembayaran($id)->tahun;
+        $namabulan = $this->santri_model->getpembayaran($id)->namabulan;
+        
+
+        $token="fmpljh2eqxeztkmj"; // Ultramsg.com token
+        $instance_id="instance41358"; // Ultramsg.com instance id
+        $client = new UltraMsg\WhatsAppApi($token,$instance_id);
+            
+        $to=$nohp;
+        $filename="Kwitansi Bulan ".$namabulan." Tahun ".$tahun." Santri ".$santri; 
+        $document= base_url('files/pdf/').'kwitansi.pdf';
+        $b64 = file_get_contents($document);
+        $hasilb64 = base64_encode($b64);
+
+        $api=$client->sendDocumentMessage($to,$filename,$hasilb64);
+        $this->session->set_flashdata('message', 'Kwitansi Sukses');
+        redirect('Pembayaran/Detail/'.$idsantri);
+
     }
 }

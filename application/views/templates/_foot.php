@@ -33,7 +33,6 @@
 <script src="<?= base_url('assets/'); ?>jquery-mask/jquery.mask.js"></script>
 <script src="<?= base_url('assets/'); ?>select2/select2.min.js"></script>
 <script src="<?= base_url('assets/'); ?>datepicker/jquery.datetimepicker.full.js"></script>
-<script type="text/javascript" src="<?= base_url('assets/'); ?>scanqr/vue.min.js"></script>
 
 <?php
 if (!empty($this->session->flashdata('message'))) {
@@ -70,6 +69,17 @@ if (!empty($this->session->flashdata('message'))) {
                             }) 
                     </script>
                 ";
+            } elseif ($pesan == "Kwitansi Sukses") {
+                // die($pesan);
+                $script = "
+                            <script>
+                                    Swal.fire({
+                                      icon: 'success',
+                                      title: 'Data',
+                                      text: 'Kwitansi Berhasil Di Kirim Ke Wali Santri'
+                                    }) 
+                            </script>
+                        ";
     } else {
         $script =
             "

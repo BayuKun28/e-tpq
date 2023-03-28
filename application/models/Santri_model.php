@@ -103,7 +103,7 @@ class Santri_model extends CI_Model
 	}
 	public function getpembayaran($id)
 	{
-		$query = "SELECT * FROM pembayaran WHERE id = '$id' ";
+		$query = "SELECT p.*,b.nama as namabulan FROM pembayaran p LEFT JOIN bulan b on b.id = p.bulan WHERE p.id = '$id' ";
         return $this->db->query($query)->row();
 	}
 }
