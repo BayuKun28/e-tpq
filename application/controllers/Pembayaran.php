@@ -51,6 +51,7 @@ class Pembayaran extends CI_Controller
         );
         $this->db->insert('pembayaran', $data);
         $this->session->set_flashdata('message', 'Berhasil Ditambah');
+        // send text
         
         $namabulan = $this->santri_model->getbulana($bulan)->nama;
         $nohp = $this->santri_model->getwaliwa($idpage)->no_hp;
@@ -246,7 +247,7 @@ class Pembayaran extends CI_Controller
         $idsantri = $this->input->get('idpage');
         $data['detail'] = $this->pembayaran_model->kwitansi($id);
         $data['identitas'] = $this->auth_model->getIdentitas();
-        $filename = base_url('files/pdf/').'kwitansi.pdf';
+        $filename = dirname(__DIR__, 2).'\files\pdf\kwitansi.pdf';
 
         $dompdf = new Dompdf();
         $customPaper = array(0,0,480,240);
@@ -261,7 +262,6 @@ class Pembayaran extends CI_Controller
         $santri = $this->santri_model->getwaliwa($idsantri)->namasantri;
         $tahun = $this->santri_model->getpembayaran($id)->tahun;
         $namabulan = $this->santri_model->getpembayaran($id)->namabulan;
-        
 
         $token="fmpljh2eqxeztkmj"; // Ultramsg.com token
         $instance_id="instance41358"; // Ultramsg.com instance id
@@ -269,7 +269,7 @@ class Pembayaran extends CI_Controller
             
         $to=$nohp;
         $filename="Kwitansi Bulan ".$namabulan." Tahun ".$tahun." Santri ".$santri; 
-        $document= base_url('files/pdf/').'kwitansi.pdf';
+        $document= dirname(__DIR__, 2).'\files\pdf\kwitansi.pdf';
         $b64 = file_get_contents($document);
         $hasilb64 = base64_encode($b64);
 
