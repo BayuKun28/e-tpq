@@ -80,7 +80,7 @@
                           <div class="collapse" id="navbar-laporan">
                               <ul class="nav nav-sm flex-column">
                                   <li class="nav-item">
-                                      <a href="#" class="nav-link">Laporan Pembayaran</a>
+                                      <a href="<?= base_url('Laporan'); ?>" class="nav-link">Laporan Pembayaran</a>
                                   </li>
                               </ul>
                           </div>

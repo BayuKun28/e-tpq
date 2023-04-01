@@ -21,6 +21,7 @@
 <!-- Optional JS -->
 <script src="<?= base_url('assets/argon/');   ?>assets/vendor/chart.js/dist/Chart.min.js"></script>
 <script src="<?= base_url('assets/argon/');   ?>assets/vendor/chart.js/dist/Chart.extension.js"></script>
+<script src="<?= base_url('assets/argon/'); ?>assets/vendor/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
 <!-- Argon JS -->
 <script src="<?= base_url('assets/argon/');   ?>assets/js/argon.js?v=1.1.0"></script>
 <!-- Demo JS - remove this in your project -->
