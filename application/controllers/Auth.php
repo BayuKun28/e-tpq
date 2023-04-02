@@ -92,7 +92,8 @@ class Auth extends CI_Controller
         $data = array(
             'username' => $this->input->post('usernameedit'),
             'password' => password_hash($this->input->post('passwordedit'), PASSWORD_DEFAULT),
-            'nama' => $this->input->post('namaedit')
+            'nama' => $this->input->post('namaedit'),
+            'role' => $this->input->post('roleedit')
         );
         $this->db->where('id', $id);
         $this->db->update('pengguna', $data);
@@ -112,6 +113,7 @@ class Auth extends CI_Controller
         $data['title'] = 'Pengguna';
         $data['user'] = $this->db->get_where('pengguna', ['username' => $this->session->userdata('username')])->row_array();
         $data['pengguna'] = $this->auth_model->read();
+        $data['role'] = $this->auth_model->getRole();
 
         $this->load->view('templates/header', $data);
         $this->load->view('templates/sidebar', $data);

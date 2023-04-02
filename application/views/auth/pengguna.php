@@ -46,14 +46,9 @@
                                     <td><?= $i; ?></td>
                                     <td><?= $s['username']; ?></td>
                                     <td><?= $s['nama']; ?></td>
-                                    <td><?php
-                                        if ($s['role'] == 1) {
-                                            echo "Admin";
-                                        } else {
-                                            echo "Kasir";
-                                        }; ?></td>
+                                    <td><?= $s['level']; ?></td>
                                     <td>
-                                        <a class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modaleditpengguna" data-idedit="<?= $s['id']; ?>" data-namaedit="<?= $s['nama']; ?>" data-usernameedit="<?= $s['username']; ?>" data-roleedit="<?= $s['role']; ?>" name="editpengguna" id="editpengguna"><i class="fa fa-edit"></i></a>
+                                        <a href='javascript:void(0)' class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modaleditpengguna" data-idedit="<?= $s['id']; ?>" data-namaedit="<?= $s['nama']; ?>" data-usernameedit="<?= $s['username']; ?>" data-roleedit="<?= $s['role']; ?>" name="editpengguna" id="editpengguna"><i class="fa fa-edit"></i></a>
 
                                         <a data-kode="<?= $s['id']; ?>" href='javascript:void(0)' class="del_pengguna btn btn-danger btn-sm"><i class="fa fa-trash"></i></a>
                                     </td>
@@ -84,15 +79,16 @@
                                     <div class="form-group">
                                         <label>Role</label>
                                         <select name="roleedit" id="roleedit" class="form-control" required>
-                                            <option value="1">Admin</option>
-                                            <option value="2">Kasir</option>
+                                            <?php foreach ($role as $row) : ?>
+                                                <option value="<?= $row['id'];?>"><?= $row['level'];?></option>
+                                            <?php endforeach;?>
                                         </select>
                                     </div>
                                     <div class="form-group">
                                         <label>Password</label>
                                         <input type="password" class="form-control" placeholder="Password" name="passwordedit" id="passwordedit" required>
                                     </div>
-                                    <button class="btn btn-success" type="submit">Tambah</button>
+                                    <button class="btn btn-success" type="submit">Simpan</button>
                                     <button class="btn btn-danger" data-dismiss="modal">Close</button>
                                 </form>
                             </div>
@@ -120,8 +116,10 @@
                                     <div class="form-group">
                                         <label>Role</label>
                                         <select name="role" id="role" class="form-control" required>
-                                            <option value="1">Admin</option>
-                                            <option value="2">Kasir</option>
+                                        <option value="" selected disabled>[Pilih Role]</option>
+                                            <?php foreach ($role as $row) : ?>
+                                                <option value="<?= $row['id'];?>"><?= $row['level'];?></option>
+                                            <?php endforeach;?>
                                         </select>
                                     </div>
                                     <div class="form-group">

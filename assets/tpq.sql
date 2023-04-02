@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: Mar 27, 2023 at 06:27 AM
+-- Generation Time: Apr 02, 2023 at 03:30 AM
 -- Server version: 5.7.36
 -- PHP Version: 7.4.26
 
@@ -91,7 +91,7 @@ CREATE TABLE IF NOT EXISTS `pembayaran` (
   `tahun` int(11) NOT NULL,
   `keterangan` text NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=14 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=20 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `pembayaran`
@@ -99,13 +99,19 @@ CREATE TABLE IF NOT EXISTS `pembayaran` (
 
 INSERT INTO `pembayaran` (`id`, `id_santri`, `tanggal_pembayaran`, `nominal`, `bulan`, `tahun`, `keterangan`) VALUES
 (1, 1, '2023-03-26 05:28:58', 100000, 3, 2023, 'lunas'),
-(13, 8, '2023-03-27 13:19:43', 1000000, 1, 2023, 'Lunas'),
+(14, 8, '2023-03-28 09:22:53', 100000, 2, 2023, '123'),
+(13, 8, '2023-03-28 12:14:54', 500000, 1, 2023, 'Lunas'),
 (4, 6, '2023-03-26 05:47:12', 100000, 1, 2023, 'aa'),
 (5, 6, '2023-03-26 05:48:15', 100000, 2, 2023, 'q'),
 (6, 6, '2023-03-26 05:52:10', 100000, 3, 2023, 'ww'),
 (12, 7, '2023-03-27 12:03:12', 200000, 1, 2023, 'Iuran Januarii'),
 (11, 7, '2023-03-27 11:44:50', 100000, 3, 2023, 'lunas'),
-(10, 6, '2023-03-26 13:14:33', 100000, 5, 2023, 'w');
+(10, 6, '2023-03-26 13:14:33', 100000, 5, 2023, 'w'),
+(15, 8, '2023-03-28 10:40:21', 100000, 3, 2023, '11'),
+(16, 1, '2023-04-02 07:52:26', 20000, 4, 2023, 'Iuran Bulan April'),
+(17, 10, '2023-04-02 10:11:19', 20000, 1, 2023, 'Bayar Januari'),
+(18, 10, '2023-04-02 10:11:55', 25000, 2, 2023, 'Bayar Februari'),
+(19, 10, '2023-04-02 10:12:04', 100000, 3, 2023, 'Bayar Maret');
 
 -- --------------------------------------------------------
 
@@ -131,10 +137,9 @@ CREATE TABLE IF NOT EXISTS `pengguna` (
 
 INSERT INTO `pengguna` (`id`, `username`, `password`, `nama`, `role`, `is_active`) VALUES
 (1, 'admin', '$2y$10$BNwXP8YdAeQqY97UD7mbG.9mVPJcJ4svg8c24hTSRIrEkLz3svpoS', 'Admin', 1, 1),
-(3, 'bayu', '$2y$10$pBjQiIFX6MRQRGmxtZuctuPttTGu34x/4Xbud4.AbOlv6FeChV1La', 'Bayu Prastyo', 1, 1),
+(3, 'bayu', '$2y$10$Enkpe.c8/S10pxohCwR9zO2mllq/28R0XW2wM51Ust1shR6tvWIBy', 'Bayu Prastyo', 1, 1),
 (6, 'esti', '$2y$10$OyC8imde4RZ7NTSdfAD1Su47NtdMw/j72Wsl2bQWOsjcwnuLLru/O', 'Esti Setyaningrum', 1, 1),
-(7, 'isnan', '$2y$10$6HIi/EcXZ6AM0j/YqHPaQeeEklm.h7sFkjzUTde758g0KfO1h3DX6', 'isnan', 2, 1),
-(8, 'tes', '$2y$10$m7fIZpgl1UeuDojmBqAzQerH7YOSbEPM1OGNSN4Oi3n/bwCxmU1l.', 'tes', 2, 1);
+(7, 'isnann', '$2y$10$fQufKWhLhLxfSDXplv7Q5uWKTO9BCcs/OTcu5mjIfW1JOIczFXVaG', 'isnann', 2, 1);
 
 -- --------------------------------------------------------
 
@@ -147,7 +152,7 @@ CREATE TABLE IF NOT EXISTS `pengguna_level` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `level` varchar(255) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `pengguna_level`
@@ -155,7 +160,9 @@ CREATE TABLE IF NOT EXISTS `pengguna_level` (
 
 INSERT INTO `pengguna_level` (`id`, `level`) VALUES
 (1, 'Admin'),
-(2, 'Kasir');
+(2, 'Petugas'),
+(3, 'Kepala'),
+(4, 'Wali');
 
 -- --------------------------------------------------------
 
@@ -173,7 +180,7 @@ CREATE TABLE IF NOT EXISTS `santri` (
   `jk` varchar(255) NOT NULL,
   `is_active` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=9 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=11 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `santri`
@@ -185,7 +192,9 @@ INSERT INTO `santri` (`id`, `nama`, `tanggal_lahir`, `alamat`, `id_wali`, `jk`, 
 (5, 'Ilyas', '2023-03-26', 'Potorono', 2, 'P', 1),
 (6, 'Denny Caknan', '2023-03-26', 'Potorono', 3, 'L', 1),
 (7, 'bona', '2023-04-08', 'Potorono', 5, 'L', 1),
-(8, 'Santri Hosting', '2023-03-27', 'Mergangsan', 6, 'L', 1);
+(8, 'Santri Hosting', '2023-03-27', 'Mergangsan', 6, 'L', 1),
+(9, '2', '2023-03-27', 'Potorono', 7, 'L', 1),
+(10, 'Bayu Prastyo', '2023-04-02', 'Karanganyar', 8, 'L', 1);
 
 -- --------------------------------------------------------
 
@@ -201,7 +210,7 @@ CREATE TABLE IF NOT EXISTS `wali` (
   `no_hp` varchar(255) NOT NULL,
   `is_active` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=9 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `wali`
@@ -213,7 +222,9 @@ INSERT INTO `wali` (`id`, `nama`, `alamat`, `no_hp`, `is_active`) VALUES
 (3, 'Catur Kurniawan', 'Adoh', '+6281328894356', 1),
 (4, 'Anov', 'Bantul', '+628991909876', 1),
 (5, 'abc', 'Adoh', '+628991907216', 1),
-(6, 'Tes Sebelum Hosting', 'Jl.MH Thamrin ,Jakarta ', '+628991907216', 1);
+(6, 'Tes Sebelum Hosting', 'Jl.MH Thamrin ,Jakarta ', '+628991907216', 1),
+(7, '1', '1', '1', 1),
+(8, 'Esti Setyaningrum', 'Mojogedang', '+6289929293123', 1);
 
 --
 -- Constraints for dumped tables
