@@ -39,9 +39,7 @@ class Laporan extends CI_Controller
 
     public function get_ajax_list()
 	{
-        $tglawal = $this->input->post('tglawal');
-        $tglakhir = $this->input->post('tglakhir');
-		$list = $this->laporan_model->get_datatables($tglawal,$tglakhir);
+		$list = $this->laporan_model->get_datatables();
 		$data = array();
 		$no = $_POST['start'];
 		foreach ($list as $d) {
@@ -81,5 +79,70 @@ class Laporan extends CI_Controller
         $dompdf->load_html($html);
         $dompdf->render();
         $dompdf->stream('Laporan Pembayaran',array("Attachment" => false));
+    }
+
+    public function indexpersantri()
+    {
+        $data['title'] = 'Laporan Pembayaran Persantri';
+        $data['user'] = $this->db->get_where('pengguna', ['username' => $this->session->userdata('username')])->row_array();
+        $tahun = $this->input->post('tahun');
+        if (!empty($tahun)) {
+            $tahun = $this->input->post('tahun');
+        } else {
+            $tahun = date('Y');
+        }
+        $data['tahun'] = $tahun;
+        $this->load->view('templates/header', $data);
+        $this->load->view('templates/sidebar', $data);
+        $this->load->view('templates/topbar', $data);
+        $this->load->view('laporan/indexpersantri', $data);
+    }
+    public function get_ajax_listpersantri()
+	{
+		$list = $this->laporan_model->get_datatablespersantri();
+		$data = array();
+		$no = $_POST['start'];
+		foreach ($list as $d) {
+			$no++;
+			$row = array();
+			$row[] = $no;
+			$row[] = $d->bulan;
+            $row[] = 'Rp'.number_format($d->nominal);
+            $row[] = $d->keterangan;
+            if($d->status == 'Dibayar')
+            {
+                $tampilstatus =  "<button type='button' class='btn btn-success btn-sm'><i class='fas fa-check-circle'></i> ".$d->status."</button>";
+            }else{
+                $tampilstatus =  "<button type='button' class='btn btn-danger btn-sm'><i class='fas fa-times-circle'></i> ".$d->status."</button>";
+            }
+			$row[] = $tampilstatus;
+			$data[] = $row;
+		}
+
+		$output = array(
+						"draw" => $_POST['draw'],
+						"recordsTotal" => $this->laporan_model->count_allpersantri(),
+						"recordsFiltered" => $this->laporan_model->count_filteredpersantri(),
+						"data" => $data,
+				);
+		//output to json format
+		echo json_encode($output);
+	}
+
+    public function cetakpersantri()
+    {
+        $tahun=$this->input->get('tahun');
+        $id_santri = $this->input->get('id_santri');
+        $data['title'] = 'Laporan Pembayaran Persantri';
+        $data['user'] = $this->db->get_where('pengguna', ['username' => $this->session->userdata('username')])->row_array();
+        $data['tahun'] = $tahun;
+        $data['namasantri'] = $this->laporan_model->getSantri($id_santri)->nama;
+        $data['pembayaran'] = $this->laporan_model->cetakpdfpersantri($tahun,$id_santri);
+        $dompdf = new Dompdf();
+        $dompdf->set_paper('A4','Landscape');
+        $html = $this->load->view('laporan/cetakpersantri', $data, true);
+        $dompdf->load_html($html);
+        $dompdf->render();
+        $dompdf->stream('Laporan Pembayaran Persantri',array("Attachment" => false));
     }
 }

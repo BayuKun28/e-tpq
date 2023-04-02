@@ -131,19 +131,6 @@
                 alert("Both Date is Required");
             }
         }); 
-
-        // $('#cetak').click(function(){
-        //     var tglawal = $('#tglawal').val();
-        //     var tglakhir = $('#tglakhir').val();
-        //     $.ajax({
-        //     type: "POST",
-        //     url: '<?= base_url(); ?>Laporan/cetak',
-        //     data: {
-        //         tglawal: tglawal,
-        //         tglakhir: tglakhir
-        //     }
-        //     });
-        // }); 
 });
 function cetakpdf()
 {

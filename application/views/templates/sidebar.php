@@ -82,6 +82,9 @@
                                   <li class="nav-item">
                                       <a href="<?= base_url('Laporan'); ?>" class="nav-link">Laporan Pembayaran</a>
                                   </li>
+                                  <li class="nav-item">
+                                      <a href="<?= base_url('Laporan/indexpersantri'); ?>" class="nav-link">Pembayaran Per Santri</a>
+                                  </li>
                               </ul>
                           </div>
                       </li>
