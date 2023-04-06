@@ -1,9 +1,9 @@
 -- phpMyAdmin SQL Dump
--- version 5.1.1
+-- version 5.1.2
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: Apr 02, 2023 at 03:30 AM
+-- Generation Time: Apr 06, 2023 at 04:46 AM
 -- Server version: 5.7.36
 -- PHP Version: 7.4.26
 
@@ -91,7 +91,7 @@ CREATE TABLE IF NOT EXISTS `pembayaran` (
   `tahun` int(11) NOT NULL,
   `keterangan` text NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=20 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=22 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `pembayaran`
@@ -111,7 +111,9 @@ INSERT INTO `pembayaran` (`id`, `id_santri`, `tanggal_pembayaran`, `nominal`, `b
 (16, 1, '2023-04-02 07:52:26', 20000, 4, 2023, 'Iuran Bulan April'),
 (17, 10, '2023-04-02 10:11:19', 20000, 1, 2023, 'Bayar Januari'),
 (18, 10, '2023-04-02 10:11:55', 25000, 2, 2023, 'Bayar Februari'),
-(19, 10, '2023-04-02 10:12:04', 100000, 3, 2023, 'Bayar Maret');
+(19, 10, '2023-04-02 10:12:04', 100000, 3, 2023, 'Bayar Maret'),
+(20, 8, '2023-04-05 08:38:36', 20000, 4, 2023, '111'),
+(21, 8, '2023-04-05 08:39:57', 100000, 5, 2023, '22');
 
 -- --------------------------------------------------------
 
@@ -127,19 +129,22 @@ CREATE TABLE IF NOT EXISTS `pengguna` (
   `nama` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
   `role` int(1) DEFAULT NULL,
   `is_active` int(1) NOT NULL,
+  `id_wali` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `role` (`role`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `pengguna`
 --
 
-INSERT INTO `pengguna` (`id`, `username`, `password`, `nama`, `role`, `is_active`) VALUES
-(1, 'admin', '$2y$10$BNwXP8YdAeQqY97UD7mbG.9mVPJcJ4svg8c24hTSRIrEkLz3svpoS', 'Admin', 1, 1),
-(3, 'bayu', '$2y$10$Enkpe.c8/S10pxohCwR9zO2mllq/28R0XW2wM51Ust1shR6tvWIBy', 'Bayu Prastyo', 1, 1),
-(6, 'esti', '$2y$10$OyC8imde4RZ7NTSdfAD1Su47NtdMw/j72Wsl2bQWOsjcwnuLLru/O', 'Esti Setyaningrum', 1, 1),
-(7, 'isnann', '$2y$10$fQufKWhLhLxfSDXplv7Q5uWKTO9BCcs/OTcu5mjIfW1JOIczFXVaG', 'isnann', 2, 1);
+INSERT INTO `pengguna` (`id`, `username`, `password`, `nama`, `role`, `is_active`, `id_wali`) VALUES
+(1, 'admin', '$2y$10$BNwXP8YdAeQqY97UD7mbG.9mVPJcJ4svg8c24hTSRIrEkLz3svpoS', 'Admin', 1, 1, 0),
+(3, 'bayu', '$2y$10$Enkpe.c8/S10pxohCwR9zO2mllq/28R0XW2wM51Ust1shR6tvWIBy', 'Bayu Prastyo', 1, 1, 0),
+(6, 'esti', '$2y$10$OyC8imde4RZ7NTSdfAD1Su47NtdMw/j72Wsl2bQWOsjcwnuLLru/O', 'Esti Setyaningrum', 1, 1, 0),
+(8, 'petugas', '$2y$10$reT1OGhCsOk9eiOjT/JSZenp.dUH3FeFwK0pdPBHDsgD1cyI3LREO', 'petugas', 2, 1, 0),
+(9, 'kepala', '$2y$10$bRa/K5sat5HIHZq51sEM4uUISJGHAo6ezIS.W9b7tYfbuw4/LpSvO', 'Kepala', 3, 1, 0),
+(12, 'estiwali', '$2y$10$Ibe54QaRxrHF7fTuQbzwRuPQapf4JnReQDteUQYMD6S6pNd33jLpe', 'Esti Setyaningrum', 4, 1, 8);
 
 -- --------------------------------------------------------
 
