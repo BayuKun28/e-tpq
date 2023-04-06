@@ -74,12 +74,20 @@ class Auth extends CI_Controller
 
     public function tambah()
     {
+        $cek = $this->input->post('role');
+
+        if ($cek == 4) {
+            $id_wali = $this->input->post('id_wali');
+        } else {
+            $id_wali = 0;
+        }
         $data = array(
             'username' => $this->input->post('username'),
             'password' => password_hash($this->input->post('password'), PASSWORD_DEFAULT),
             'nama' => $this->input->post('nama'),
             'role' => $this->input->post('role'),
-            'is_active' => 1
+            'is_active' => 1,
+            'id_wali' => $id_wali
         );
         $this->db->insert('pengguna', $data);
         $this->session->set_flashdata('message', 'Berhasil Ditambah');
@@ -89,11 +97,19 @@ class Auth extends CI_Controller
     public function edit()
     {
         $id = $this->input->post('idedit');
+        $cek = $this->input->post('roleedit');
+
+        if ($cek == 4) {
+            $id_wali = $this->input->post('id_waliedit');
+        } else {
+            $id_wali = 0;
+        }
         $data = array(
             'username' => $this->input->post('usernameedit'),
             'password' => password_hash($this->input->post('passwordedit'), PASSWORD_DEFAULT),
             'nama' => $this->input->post('namaedit'),
-            'role' => $this->input->post('roleedit')
+            'role' => $this->input->post('roleedit'),
+            'id_wali' => $id_wali
         );
         $this->db->where('id', $id);
         $this->db->update('pengguna', $data);

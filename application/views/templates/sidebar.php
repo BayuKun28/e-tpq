@@ -23,85 +23,163 @@
                   </div>
               </div>
           </div>
-          <div class="navbar-inner">
-              <!-- Collapse -->
-              <div class="collapse navbar-collapse" id="sidenav-collapse-main">
-                  <!-- Nav items -->
-                  <ul class="navbar-nav">
-                      <li class="nav-item">
-                          <a class="nav-link" href="<?= base_url('Dashboard'); ?>">
-                              <i class="ni ni-shop text-primary"></i>
-                              <span class="nav-link-text">Dashboard</span>
-                          </a>
-                      </li>
-                      <li class="nav-item">
-                          <a class="nav-link" href="#navbar-master" data-toggle="collapse" role="button" aria-expanded="false" aria-controls="navbar-master">
-                              <i class="ni ni-satisfied text-primary"></i>
-                              <span class="nav-link-text">Master</span>
-                          </a>
-                          <div class="collapse" id="navbar-master">
-                              <ul class="nav nav-sm flex-column">
-                                  <li class="nav-item">
-                                      <a href="<?= base_url('Wali'); ?>" class="nav-link">Wali Santri</a>
-                                  </li>
-                                  <li class="nav-item">
-                                      <a href="<?= base_url('Santri'); ?>" class="nav-link">Santri</a>
-                                  </li>
-                              </ul>
-                          </div>
-                      </li>
-                      <li class="nav-item">
-                          <a class="nav-link" href="<?= base_url('Pembayaran/Data'); ?>">
-                          <i class="ni ni-cart text-green"></i>
-                              <span class="nav-link-text">Iuran Wajib Bulanan</span>
-                          </a>
-                      </li>
-                      <!-- <li class="nav-item">
-                          <a class="nav-link" href="#navbar-iuran" data-toggle="collapse" role="button" aria-expanded="false" aria-controls="navbar-iuran">
-                            <i class="ni ni-cart text-green"></i>
-                              <span class="nav-link-text">Iuran Wajib Bulanan</span>
-                          </a>
-                          <div class="collapse" id="navbar-iuran">
-                              <ul class="nav nav-sm flex-column">
-                                  <li class="nav-item">
-                                      <a href="<?= base_url('Pembayaran'); ?>" class="nav-link">Pembayaran</a>
-                                  </li>
-                                  <li class="nav-item">
-                                      <a href="<?= base_url('Pembayaran/Data'); ?>" class="nav-link">Data</a>
-                                  </li>
-                              </ul>
-                          </div>
-                      </li> -->
-                      <li class="nav-item">
-                          <a class="nav-link" href="#navbar-laporan" data-toggle="collapse" role="button" aria-expanded="false" aria-controls="navbar-laporan">
-                              <i class="ni ni-basket text-orange"></i>
-                              <span class="nav-link-text">Laporan</span>
-                          </a>
-                          <div class="collapse" id="navbar-laporan">
-                              <ul class="nav nav-sm flex-column">
-                                  <li class="nav-item">
-                                      <a href="<?= base_url('Laporan'); ?>" class="nav-link">Laporan Pembayaran</a>
-                                  </li>
-                                  <li class="nav-item">
-                                      <a href="<?= base_url('Laporan/indexpersantri'); ?>" class="nav-link">Pembayaran Per Santri</a>
-                                  </li>
-                              </ul>
-                          </div>
-                      </li>
-                      <li class="nav-item">
-                          <a class="nav-link" href="<?= base_url('Pengaturan'); ?>">
-                              <i class="ni ni-settings text-primary"></i>
-                              <span class="nav-link-text">Pengaturan</span>
-                          </a>
-                      </li>
-                      <li class="nav-item">
-                          <a class="nav-link" href="<?= base_url('Auth/pengguna'); ?>">
-                              <i class="ni ni-single-02 text-primary"></i>
-                              <span class="nav-link-text">Pengguna</span>
-                          </a>
-                      </li>
-                  </ul>
+          <?php if ($this->session->userdata('role')  == 1) { ?>
+              <div class="navbar-inner">
+                  <!-- Collapse -->
+                  <div class="collapse navbar-collapse" id="sidenav-collapse-main">
+                      <!-- Nav items -->
+                      <ul class="navbar-nav">
+                          <li class="nav-item">
+                              <a class="nav-link" href="<?= base_url('Dashboard'); ?>">
+                                  <i class="ni ni-shop text-primary"></i>
+                                  <span class="nav-link-text">Dashboard</span>
+                              </a>
+                          </li>
+                          <li class="nav-item">
+                              <a class="nav-link" href="#navbar-master" data-toggle="collapse" role="button" aria-expanded="false" aria-controls="navbar-master">
+                                  <i class="ni ni-satisfied text-primary"></i>
+                                  <span class="nav-link-text">Master</span>
+                              </a>
+                              <div class="collapse" id="navbar-master">
+                                  <ul class="nav nav-sm flex-column">
+                                      <li class="nav-item">
+                                          <a href="<?= base_url('Wali'); ?>" class="nav-link">Wali Santri</a>
+                                      </li>
+                                      <li class="nav-item">
+                                          <a href="<?= base_url('Santri'); ?>" class="nav-link">Santri</a>
+                                      </li>
+                                  </ul>
+                              </div>
+                          </li>
+                          <li class="nav-item">
+                              <a class="nav-link" href="<?= base_url('Pembayaran/Data'); ?>">
+                                  <i class="ni ni-cart text-green"></i>
+                                  <span class="nav-link-text">Iuran Wajib Bulanan</span>
+                              </a>
+                          </li>
+                          <li class="nav-item">
+                              <a class="nav-link" href="#navbar-laporan" data-toggle="collapse" role="button" aria-expanded="false" aria-controls="navbar-laporan">
+                                  <i class="ni ni-basket text-orange"></i>
+                                  <span class="nav-link-text">Laporan</span>
+                              </a>
+                              <div class="collapse" id="navbar-laporan">
+                                  <ul class="nav nav-sm flex-column">
+                                      <li class="nav-item">
+                                          <a href="<?= base_url('Laporan'); ?>" class="nav-link">Laporan Pembayaran</a>
+                                      </li>
+                                      <li class="nav-item">
+                                          <a href="<?= base_url('Laporan/indexpersantri'); ?>" class="nav-link">Pembayaran Per Santri</a>
+                                      </li>
+                                  </ul>
+                              </div>
+                          </li>
+                          <li class="nav-item">
+                              <a class="nav-link" href="<?= base_url('Pengaturan'); ?>">
+                                  <i class="ni ni-settings text-primary"></i>
+                                  <span class="nav-link-text">Pengaturan</span>
+                              </a>
+                          </li>
+                          <li class="nav-item">
+                              <a class="nav-link" href="<?= base_url('Auth/pengguna'); ?>">
+                                  <i class="ni ni-single-02 text-primary"></i>
+                                  <span class="nav-link-text">Pengguna</span>
+                              </a>
+                          </li>
+                      </ul>
+                  </div>
               </div>
-          </div>
+          <?php }
+            if ($this->session->userdata('role') == 2) { ?>
+              <div class="navbar-inner">
+                  <!-- Collapse -->
+                  <div class="collapse navbar-collapse" id="sidenav-collapse-main">
+                      <!-- Nav items -->
+                      <ul class="navbar-nav">
+                          <li class="nav-item">
+                              <a class="nav-link" href="<?= base_url('Dashboard'); ?>">
+                                  <i class="ni ni-shop text-primary"></i>
+                                  <span class="nav-link-text">Dashboard</span>
+                              </a>
+                          </li>
+                          <li class="nav-item">
+                              <a class="nav-link" href="<?= base_url('Pembayaran/Data'); ?>">
+                                  <i class="ni ni-cart text-green"></i>
+                                  <span class="nav-link-text">Iuran Wajib Bulanan</span>
+                              </a>
+                          </li>
+                          <li class="nav-item">
+                              <a class="nav-link" href="#navbar-laporan" data-toggle="collapse" role="button" aria-expanded="false" aria-controls="navbar-laporan">
+                                  <i class="ni ni-basket text-orange"></i>
+                                  <span class="nav-link-text">Laporan</span>
+                              </a>
+                              <div class="collapse" id="navbar-laporan">
+                                  <ul class="nav nav-sm flex-column">
+                                      <li class="nav-item">
+                                          <a href="<?= base_url('Laporan'); ?>" class="nav-link">Laporan Pembayaran</a>
+                                      </li>
+                                      <li class="nav-item">
+                                          <a href="<?= base_url('Laporan/indexpersantri'); ?>" class="nav-link">Pembayaran Per Santri</a>
+                                      </li>
+                                  </ul>
+                              </div>
+                          </li>
+                      </ul>
+                  </div>
+              </div>
+          <?php }
+            if ($this->session->userdata('role')  == 3) { ?>
+              <div class="navbar-inner">
+                  <!-- Collapse -->
+                  <div class="collapse navbar-collapse" id="sidenav-collapse-main">
+                      <!-- Nav items -->
+                      <ul class="navbar-nav">
+                          <li class="nav-item">
+                              <a class="nav-link" href="<?= base_url('Dashboard'); ?>">
+                                  <i class="ni ni-shop text-primary"></i>
+                                  <span class="nav-link-text">Dashboard</span>
+                              </a>
+                          </li>
+                          <li class="nav-item">
+                              <a class="nav-link" href="#navbar-laporan" data-toggle="collapse" role="button" aria-expanded="false" aria-controls="navbar-laporan">
+                                  <i class="ni ni-basket text-orange"></i>
+                                  <span class="nav-link-text">Laporan</span>
+                              </a>
+                              <div class="collapse" id="navbar-laporan">
+                                  <ul class="nav nav-sm flex-column">
+                                      <li class="nav-item">
+                                          <a href="<?= base_url('Laporan'); ?>" class="nav-link">Laporan Pembayaran</a>
+                                      </li>
+                                      <li class="nav-item">
+                                          <a href="<?= base_url('Laporan/indexpersantri'); ?>" class="nav-link">Pembayaran Per Santri</a>
+                                      </li>
+                                  </ul>
+                              </div>
+                          </li>
+                      </ul>
+                  </div>
+              </div>
+          <?php }
+            if ($this->session->userdata('role')  == 4) { ?>
+              <div class="navbar-inner">
+                  <!-- Collapse -->
+                  <div class="collapse navbar-collapse" id="sidenav-collapse-main">
+                      <!-- Nav items -->
+                      <ul class="navbar-nav">
+                          <li class="nav-item">
+                              <a class="nav-link" href="<?= base_url('Dashboard'); ?>">
+                                  <i class="ni ni-shop text-primary"></i>
+                                  <span class="nav-link-text">Dashboard</span>
+                              </a>
+                          </li>
+                          <li class="nav-item">
+                              <a class="nav-link" href="<?= base_url('Laporan/indexpersantri'); ?>">
+                                  <i class="ni ni-cart text-green"></i>
+                                  <span class="nav-link-text">Histori IWB</span>
+                              </a>
+                          </li>
+                      </ul>
+                  </div>
+              </div>
+          <?php }; ?>
       </div>
   </nav>

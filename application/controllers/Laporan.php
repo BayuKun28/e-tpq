@@ -3,6 +3,7 @@
 require_once 'vendor/autoload.php';
 
 use Dompdf\Dompdf as Dompdf;
+
 class Laporan extends CI_Controller
 {
 
@@ -38,47 +39,47 @@ class Laporan extends CI_Controller
     }
 
     public function get_ajax_list()
-	{
-		$list = $this->laporan_model->get_datatables();
-		$data = array();
-		$no = $_POST['start'];
-		foreach ($list as $d) {
-			$no++;
-			$row = array();
-			$row[] = $no;
-			$row[] = $d->namasantri;
-			$row[] = format_indo(date($d->tanggal_pembayaran));
-			$row[] = 'Rp'.number_format($d->nominal);
+    {
+        $list = $this->laporan_model->get_datatables();
+        $data = array();
+        $no = $_POST['start'];
+        foreach ($list as $d) {
+            $no++;
+            $row = array();
+            $row[] = $no;
+            $row[] = $d->namasantri;
+            $row[] = format_indo(date($d->tanggal_pembayaran));
+            $row[] = 'Rp' . number_format($d->nominal);
             $row[] = $d->namabulan;
             $row[] = $d->keterangan;
-			$data[] = $row;
-		}
+            $data[] = $row;
+        }
 
-		$output = array(
-						"draw" => $_POST['draw'],
-						"recordsTotal" => $this->laporan_model->count_all(),
-						"recordsFiltered" => $this->laporan_model->count_filtered(),
-						"data" => $data,
-				);
-		//output to json format
-		echo json_encode($output);
-	}
+        $output = array(
+            "draw" => $_POST['draw'],
+            "recordsTotal" => $this->laporan_model->count_all(),
+            "recordsFiltered" => $this->laporan_model->count_filtered(),
+            "data" => $data,
+        );
+        //output to json format
+        echo json_encode($output);
+    }
 
     public function cetak()
     {
-        $tglawal=$this->input->get('tglawal');
+        $tglawal = $this->input->get('tglawal');
         $tglakhir = $this->input->get('tglakhir');
         $data['title'] = 'Laporan Pembayaran';
         $data['user'] = $this->db->get_where('pengguna', ['username' => $this->session->userdata('username')])->row_array();
         $data['tglawal'] = $tglawal;
         $data['tglakhir'] = $tglakhir;
-        $data['pembayaran'] = $this->laporan_model->cetakpdf($tglawal,$tglakhir);
+        $data['pembayaran'] = $this->laporan_model->cetakpdf($tglawal, $tglakhir);
         $dompdf = new Dompdf();
-        $dompdf->set_paper('A4','Landscape');
+        $dompdf->set_paper('A4', 'Landscape');
         $html = $this->load->view('laporan/cetak', $data, true);
         $dompdf->load_html($html);
         $dompdf->render();
-        $dompdf->stream('Laporan Pembayaran',array("Attachment" => false));
+        $dompdf->stream('Laporan Pembayaran', array("Attachment" => false));
     }
 
     public function indexpersantri()
@@ -98,51 +99,50 @@ class Laporan extends CI_Controller
         $this->load->view('laporan/indexpersantri', $data);
     }
     public function get_ajax_listpersantri()
-	{
-		$list = $this->laporan_model->get_datatablespersantri();
-		$data = array();
-		$no = $_POST['start'];
-		foreach ($list as $d) {
-			$no++;
-			$row = array();
-			$row[] = $no;
-			$row[] = $d->bulan;
-            $row[] = 'Rp'.number_format($d->nominal);
+    {
+        $list = $this->laporan_model->get_datatablespersantri();
+        $data = array();
+        $no = $_POST['start'];
+        foreach ($list as $d) {
+            $no++;
+            $row = array();
+            $row[] = $no;
+            $row[] = $d->bulan;
+            $row[] = 'Rp' . number_format($d->nominal);
             $row[] = $d->keterangan;
-            if($d->status == 'Dibayar')
-            {
-                $tampilstatus =  "<button type='button' class='btn btn-success btn-sm'><i class='fas fa-check-circle'></i> ".$d->status."</button>";
-            }else{
-                $tampilstatus =  "<button type='button' class='btn btn-danger btn-sm'><i class='fas fa-times-circle'></i> ".$d->status."</button>";
+            if ($d->status == 'Dibayar') {
+                $tampilstatus =  "<button type='button' class='btn btn-success btn-sm'><i class='fas fa-check-circle'></i> " . $d->status . "</button>";
+            } else {
+                $tampilstatus =  "<button type='button' class='btn btn-danger btn-sm'><i class='fas fa-times-circle'></i> " . $d->status . "</button>";
             }
-			$row[] = $tampilstatus;
-			$data[] = $row;
-		}
+            $row[] = $tampilstatus;
+            $data[] = $row;
+        }
 
-		$output = array(
-						"draw" => $_POST['draw'],
-						"recordsTotal" => $this->laporan_model->count_allpersantri(),
-						"recordsFiltered" => $this->laporan_model->count_filteredpersantri(),
-						"data" => $data,
-				);
-		//output to json format
-		echo json_encode($output);
-	}
+        $output = array(
+            "draw" => $_POST['draw'],
+            "recordsTotal" => $this->laporan_model->count_allpersantri(),
+            "recordsFiltered" => $this->laporan_model->count_filteredpersantri(),
+            "data" => $data,
+        );
+        //output to json format
+        echo json_encode($output);
+    }
 
     public function cetakpersantri()
     {
-        $tahun=$this->input->get('tahun');
+        $tahun = $this->input->get('tahun');
         $id_santri = $this->input->get('id_santri');
         $data['title'] = 'Laporan Pembayaran Persantri';
         $data['user'] = $this->db->get_where('pengguna', ['username' => $this->session->userdata('username')])->row_array();
         $data['tahun'] = $tahun;
         $data['namasantri'] = $this->laporan_model->getSantri($id_santri)->nama;
-        $data['pembayaran'] = $this->laporan_model->cetakpdfpersantri($tahun,$id_santri);
+        $data['pembayaran'] = $this->laporan_model->cetakpdfpersantri($tahun, $id_santri);
         $dompdf = new Dompdf();
-        $dompdf->set_paper('A4','Landscape');
+        $dompdf->set_paper('A4', 'Landscape');
         $html = $this->load->view('laporan/cetakpersantri', $data, true);
         $dompdf->load_html($html);
         $dompdf->render();
-        $dompdf->stream('Laporan Pembayaran Persantri',array("Attachment" => false));
+        $dompdf->stream('Laporan Pembayaran Persantri', array("Attachment" => false));
     }
 }

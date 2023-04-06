@@ -79,6 +79,7 @@ class Pembayaran extends CI_Controller
         // $api=$client->sendDocumentMessage($to,$filename,$document);
         // print_r($api);
 
+
         redirect('Pembayaran/Detail/'.$idpage);
     }
 

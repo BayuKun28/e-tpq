@@ -32,7 +32,7 @@
                     <!-- /.panel-heading -->
 
                     <form action="<?= base_url('Auth/simpanprofil'); ?>" method="POST" enctype="multipart/form-data">
-                        <div class="col-md-12">
+                        <div class="row">
                             <div class="col-md-6">
                                 <label>Nama Pengguna</label>
                                 <input class="form-control" type="hidden" name="idedit" id="idedit" value="<?= $profil['id']; ?>" required>
@@ -42,13 +42,12 @@
                                 <label>Username</label>
                                 <input class="form-control" type="text" name="username" id="username" value="<?= $profil['username']; ?>" required>
                             </div>
-                        </div>
-                        <div class="col-md-12">
                             <div class="col-md-6">
                                 <label>Password</label>
                                 <input class="form-control" type="password" name="password" id="password" required>
                             </div>
                         </div>
+                        <br>
                         <div class="text-right">
                             <button class="btn btn-success" type="submit">Simpan</button>
                         </div>

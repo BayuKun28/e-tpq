@@ -18,7 +18,12 @@ class Auth_model extends CI_Model
     public function read()
     {
         $idk = $this->session->userdata('id');
-        $query = "SELECT p.*,pl.level FROM pengguna p LEFT JOIN pengguna_level pl on pl.id = p.role where p.id <> '$idk' ";
+        $query = "SELECT p.*,pl.level,w.nama as namawali
+                  FROM pengguna p 
+                  LEFT JOIN pengguna_level pl on pl.id = p.role 
+                  LEFT JOIN wali w on w.id = p.id_wali
+                  where p.id <> '$idk' 
+                  ORDER BY p.id ASC";
         return $this->db->query($query)->result_array();
         echo json_encode($query);
     }

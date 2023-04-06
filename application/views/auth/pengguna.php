@@ -25,7 +25,7 @@
                 <!-- Card header -->
                 <div class="card-header">
                     <div class="col-md-10"><b>Data <?= $title ?></b></div>
-                    <div class="text-right"><a href="#" class="btn btn-success btn-sm-2" data-toggle="modal" data-target="#modaltambahpengguna">Tambah</a></div>
+                    <div class="text-right"><a href="#" class="btn btn-success btn-sm-2" data-toggle="modal" data-target="#modaltambahpengguna" onclick="resetform()">Tambah</a></div>
                 </div>
 
                 <div class="table-responsive py-4 px-4">
@@ -48,7 +48,7 @@
                                     <td><?= $s['nama']; ?></td>
                                     <td><?= $s['level']; ?></td>
                                     <td>
-                                        <a href='javascript:void(0)' class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modaleditpengguna" data-idedit="<?= $s['id']; ?>" data-namaedit="<?= $s['nama']; ?>" data-usernameedit="<?= $s['username']; ?>" data-roleedit="<?= $s['role']; ?>" name="editpengguna" id="editpengguna"><i class="fa fa-edit"></i></a>
+                                        <a href='javascript:void(0)' class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modaleditpengguna" data-idedit="<?= $s['id']; ?>" data-namaedit="<?= $s['nama']; ?>" data-usernameedit="<?= $s['username']; ?>" data-roleedit="<?= $s['role']; ?>" data-id_waliedit="<?= $s['id_wali']; ?>" data-namawaliedit="<?= $s['namawali']; ?>" name="editpengguna" id="editpengguna"><i class="fa fa-edit"></i></a>
 
                                         <a data-kode="<?= $s['id']; ?>" href='javascript:void(0)' class="del_pengguna btn btn-danger btn-sm"><i class="fa fa-trash"></i></a>
                                     </td>
@@ -66,7 +66,7 @@
                                 <h5 class="modal-title"><b>Edit pengguna</b></h5>
                             </div>
                             <div class="modal-body">
-                                <form action="<?= base_url('Auth/edit'); ?>" method="post">
+                                <form action="<?= base_url('Auth/edit'); ?>" method="post" id="formedit">
                                     <div class="form-group">
                                         <input type="hidden" name="idedit" id="idedit">
                                         <label>Nama</label>
@@ -78,10 +78,15 @@
                                     </div>
                                     <div class="form-group">
                                         <label>Role</label>
-                                        <select name="roleedit" id="roleedit" class="form-control" required>
+                                        <select name="roleedit" id="roleedit" class="form-control" onchange="setWaliEdit(this.value)" required>
                                             <?php foreach ($role as $row) : ?>
-                                                <option value="<?= $row['id'];?>"><?= $row['level'];?></option>
-                                            <?php endforeach;?>
+                                                <option value="<?= $row['id']; ?>"><?= $row['level']; ?></option>
+                                            <?php endforeach; ?>
+                                        </select>
+                                    </div>
+                                    <div class="form-group" id="linewaliedit">
+                                        <label>Wali Santri</label>
+                                        <select class="form-control itemWali" id="id_waliedit" name="id_waliedit">
                                         </select>
                                     </div>
                                     <div class="form-group">
@@ -103,7 +108,7 @@
                                 <h5 class="modal-title"><b>Tambah pengguna</b></h5>
                             </div>
                             <div class="modal-body">
-                                <form action="<?= base_url('Auth/tambah'); ?>" method="post">
+                                <form action="<?= base_url('Auth/tambah'); ?>" method="post" id="formadd">
                                     <!-- <input type="hidden" name="id"> -->
                                     <div class="form-group">
                                         <label>Nama</label>
@@ -115,11 +120,16 @@
                                     </div>
                                     <div class="form-group">
                                         <label>Role</label>
-                                        <select name="role" id="role" class="form-control" required>
-                                        <option value="" selected disabled>[Pilih Role]</option>
+                                        <select name="role" id="role" class="form-control" onchange="setWali(this.value)" required>
+                                            <option value="" selected disabled>[Pilih Role]</option>
                                             <?php foreach ($role as $row) : ?>
-                                                <option value="<?= $row['id'];?>"><?= $row['level'];?></option>
-                                            <?php endforeach;?>
+                                                <option value="<?= $row['id']; ?>"><?= $row['level']; ?></option>
+                                            <?php endforeach; ?>
+                                        </select>
+                                    </div>
+                                    <div class="form-group" id="linewali">
+                                        <label>Wali Santri</label>
+                                        <select class="form-control itemWali" id="id_wali" name="id_wali">
                                         </select>
                                     </div>
                                     <div class="form-group">
@@ -144,16 +154,75 @@
                         });
                     });
 
+                    function setWali(x) {
+                        if (x == '4') {
+                            document.getElementById("linewali").classList.remove("d-none");
+                        } else {
+                            document.getElementById("linewali").classList.add("d-none");
+                        }
+                    }
+
+                    function setWaliEdit(x) {
+                        if (x == '4') {
+                            document.getElementById("linewaliedit").classList.remove("d-none");
+                        } else {
+                            document.getElementById("linewaliedit").classList.add("d-none");
+                        }
+                    }
+
+                    setWali(document.getElementById("role").value);
+
+                    function resetform() {
+                        $('#formadd')[0].reset();
+                        document.getElementById("linewali").classList.add("d-none");
+                        $("#id_wali").val('').trigger('change')
+                    }
+
+
+                    $('.itemWali').select2({
+                        width: '100%',
+                        ajax: {
+                            url: "<?= base_url(); ?>/Santri/getwali2",
+                            dataType: "json",
+                            delay: 250,
+                            data: function(params) {
+                                return {
+                                    wal: params.term
+                                };
+                            },
+                            processResults: function(data) {
+                                var results = [];
+                                $.each(data, function(index, item) {
+                                    results.push({
+                                        id: item.id,
+                                        text: item.nama
+                                    });
+                                });
+                                return {
+                                    results: results
+                                }
+                            }
+                        }
+                    });
+
                     $(document).ready(function() {
                         $(document).on('click', '#editpengguna', function() {
                             var idedit = $(this).data('idedit');
                             var namaedit = $(this).data('namaedit');
                             var usernameedit = $(this).data('usernameedit');
                             var roleedit = $(this).data('roleedit');
+                            var id_waliedit = $(this).data('id_waliedit');
+                            var namawaliedit = $(this).data('namawaliedit');
+
+                            var $hasilwali = $("<option selected='selected'></option>").val(id_waliedit).text(namawaliedit)
+                            $("#id_waliedit").append($hasilwali).trigger('change');
+
+                            setWaliEdit(roleedit);
                             $('#idedit').val(idedit);
                             $('#namaedit').val(namaedit);
                             $('#usernameedit').val(usernameedit);
                             $('#roleedit').val(roleedit);
+                            $('#id_waliedit').val(id_waliedit);
                         })
                     })
 
@@ -161,7 +230,6 @@
                         event.preventDefault();
                         let kode = $(this).attr('data-kode');
                         let delete_url = "<?= base_url(); ?>/Auth/delete/" + kode;
-
 
                         Swal.fire({
                             title: 'Hapus Data',
@@ -179,59 +247,6 @@
                         });
                     });
                 </script>
-                <?php
-                if (!empty($this->session->flashdata('message'))) {
-                    $pesan = $this->session->flashdata('message');
-                    if ($pesan == "Berhasil Ditambah") {
-                        $script = "
-                    <script>
-                            Swal.fire({
-                              icon: 'success',
-                              title: 'Data',
-                              text: 'Data Berhasil Ditambah'
-                            })
-                    </script>
-                ";
-                    } elseif ($pesan == "Berhasil Dihapus") {
-                        // die($pesan);
-                        $script = "
-                    <script>
-                            Swal.fire({
-                              icon: 'success',
-                              title: 'Data',
-                              text: 'Berhasil Dihapus'
-                            })
-                    </script>
-                ";
-                    } elseif ($pesan == "Berhasil Di Update") {
-                        // die($pesan);
-                        $script = "
-                    <script>
-                            Swal.fire({
-                              icon: 'success',
-                              title: 'Data',
-                              text: 'Berhasil Di Update'
-                            })
-                    </script>
-                ";
-                    } else {
-                        $script =
-                            "
-                    <script>
-                                Swal.fire({
-                                  icon: 'error',
-                                  title: 'Data',
-                                  text: 'Gagal'
-                                })
-
-                    </script>
-                    ";
-                    }
-                } else {
-                    $script = "";
-                }
-                echo $script;
-                ?>
 
                 </body>
 
