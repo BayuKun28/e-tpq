@@ -24,34 +24,34 @@ class Santri extends CI_Controller
     }
 
     public function get_ajax_list()
-	{
-		$list = $this->santri_model->get_datatables();
-		$data = array();
-		$no = $_POST['start'];
-		foreach ($list as $d) {
-			$no++;
-			$row = array();
-			$row[] = $no;
+    {
+        $list = $this->santri_model->get_datatables();
+        $data = array();
+        $no = $_POST['start'];
+        foreach ($list as $d) {
+            $no++;
+            $row = array();
+            $row[] = $no;
 
-			$row[] = $d->nama;
-			$row[] = format_indo(date($d->tanggal_lahir));
-			$row[] = $d->alamat;
+            $row[] = $d->nama;
+            $row[] = format_indo(date($d->tanggal_lahir));
+            $row[] = $d->alamat;
             $row[] = $d->namawali;
             $row[] = $d->jk;
-			$row[] = '<a href="javascript:void(0)" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modaleditsantri" data-idedit="'.$d->id.'" data-namaedit="'.$d->nama.'" data-tanggal_lahiredit="'.$d->tanggal_lahir.'" data-alamatedit="'.$d->alamat.'" data-jkedit="'.$d->jk.'" data-id_waliedit="'.$d->id_wali.'" data-namawaliedit="'.$d->namawali.'" data-is_activeedit="'.$d->is_active.'" name="editsantri" id="editsantri"><i class="fa fa-edit"></i></a>
-            <a data-kode="'.$d->id.'" href="javascript:void(0)" class="del_santri btn btn-danger btn-sm"><i class="fa fa-trash"></i></a>';
-			$data[] = $row;
-		}
+            $row[] = '<a href="javascript:void(0)" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modaleditsantri" data-idedit="' . $d->id . '" data-namaedit="' . $d->nama . '" data-tanggal_lahiredit="' . $d->tanggal_lahir . '" data-alamatedit="' . $d->alamat . '" data-jkedit="' . $d->jk . '" data-id_waliedit="' . $d->id_wali . '" data-namawaliedit="' . $d->namawali . '" data-is_activeedit="' . $d->is_active . '" name="editsantri" id="editsantri"><i class="fa fa-edit"></i></a>
+            <a data-kode="' . $d->id . '" href="javascript:void(0)" class="del_santri btn btn-danger btn-sm"><i class="fa fa-trash"></i></a>';
+            $data[] = $row;
+        }
 
-		$output = array(
-						"draw" => $_POST['draw'],
-						"recordsTotal" => $this->santri_model->count_all(),
-						"recordsFiltered" => $this->santri_model->count_filtered(),
-						"data" => $data,
-				);
-		//output to json format
-		echo json_encode($output);
-	}
+        $output = array(
+            "draw" => $_POST['draw'],
+            "recordsTotal" => $this->santri_model->count_all(),
+            "recordsFiltered" => $this->santri_model->count_filtered(),
+            "data" => $data,
+        );
+        //output to json format
+        echo json_encode($output);
+    }
 
     public function getwali2()
     {
@@ -61,8 +61,10 @@ class Santri extends CI_Controller
     }
     public function getsantri2()
     {
+        $hak = $this->session->userdata('role');
+        $wali = $this->session->userdata('id_wali');
         $san = $this->input->get('san');
-        $query = $this->santri_model->getsantri($san, 'nama');
+        $query = $this->santri_model->getsantri($san, $hak, $wali);
         echo json_encode($query);
     }
 
