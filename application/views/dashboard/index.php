@@ -22,7 +22,7 @@
                                 <div class="row">
                                     <div class="col">
                                         <h5 class="card-title text-uppercase text-muted mb-0">Santri Bayar Bulan Ini</h5>
-                                        <span class="h2 font-weight-bold mb-0" id="bayar_bulan">0</span>
+                                        <span class="h2 font-weight-bold mb-0" id="bayar_bulan"><?= $bulanini['hitung']; ?></span>
                                     </div>
                                     <div class="col-auto">
                                         <div class="icon icon-shape bg-gradient-red text-white rounded-circle shadow">
@@ -43,7 +43,7 @@
                                 <div class="row">
                                     <div class="col">
                                         <h5 class="card-title text-uppercase text-muted mb-0">Santri Bayar Hari Ini</h5>
-                                        <span class="h2 font-weight-bold mb-0" id="bayar_hari">0</span>
+                                        <span class="h2 font-weight-bold mb-0" id="bayar_hari"><?= $hariini['hitung']; ?></span>
                                     </div>
                                     <div class="col-auto">
                                         <div class="icon icon-shape bg-gradient-orange text-white rounded-circle shadow">
@@ -63,8 +63,8 @@
                             <div class="card-body">
                                 <div class="row">
                                     <div class="col">
-                                        <h5 class="card-title text-uppercase text-muted mb-0">Transaksi Hari Ini</h5>
-                                        <span class="h2 font-weight-bold mb-0" id="transaksi_hari">0</span>
+                                        <h5 class="card-title text-uppercase text-muted mb-0">Transaksi Tahun Ini</h5>
+                                        <span class="h2 font-weight-bold mb-0" id="transaksi_hari"><?= $tahunini['hitung']; ?></span>
                                     </div>
                                     <div class="col-auto">
                                         <div class="icon icon-shape bg-gradient-green text-white rounded-circle shadow">
@@ -73,7 +73,7 @@
                                     </div>
                                 </div>
                                 <p class="mt-3 mb-0 text-sm">
-                                    <span class="text-nowrap">Hari Ini</span>
+                                    <span class="text-nowrap">Tahun Ini</span>
                                 </p>
                             </div>
                         </div>
@@ -93,7 +93,7 @@
                                     </div>
                                 </div>
                                 <p class="mt-3 mb-0 text-sm">
-                                    <span class="text-nowrap">Disini</span>
+                                    <a href="<?= base_url('Laporan'); ?>"><span class="text-nowrap">Disini</span></a>
                                 </p>
                             </div>
                         </div>
@@ -103,5 +103,5 @@
         </div>
     </div>
     <!-- Page content -->
-        <!-- </div> -->
-        <?php $this->load->view('templates/_foot'); ?>
+    <!-- </div> -->
+    <?php $this->load->view('templates/_foot'); ?>

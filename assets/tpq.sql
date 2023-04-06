@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: Apr 06, 2023 at 04:46 AM
+-- Generation Time: Apr 06, 2023 at 06:05 AM
 -- Server version: 5.7.36
 -- PHP Version: 7.4.26
 
@@ -91,7 +91,7 @@ CREATE TABLE IF NOT EXISTS `pembayaran` (
   `tahun` int(11) NOT NULL,
   `keterangan` text NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=22 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=23 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `pembayaran`
@@ -113,7 +113,8 @@ INSERT INTO `pembayaran` (`id`, `id_santri`, `tanggal_pembayaran`, `nominal`, `b
 (18, 10, '2023-04-02 10:11:55', 25000, 2, 2023, 'Bayar Februari'),
 (19, 10, '2023-04-02 10:12:04', 100000, 3, 2023, 'Bayar Maret'),
 (20, 8, '2023-04-05 08:38:36', 20000, 4, 2023, '111'),
-(21, 8, '2023-04-05 08:39:57', 100000, 5, 2023, '22');
+(21, 8, '2023-04-05 08:39:57', 100000, 5, 2023, '22'),
+(22, 10, '2023-04-06 12:21:15', 20000, 4, 2023, '123');
 
 -- --------------------------------------------------------
 
@@ -132,7 +133,7 @@ CREATE TABLE IF NOT EXISTS `pengguna` (
   `id_wali` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `role` (`role`)
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `pengguna`
@@ -140,11 +141,9 @@ CREATE TABLE IF NOT EXISTS `pengguna` (
 
 INSERT INTO `pengguna` (`id`, `username`, `password`, `nama`, `role`, `is_active`, `id_wali`) VALUES
 (1, 'admin', '$2y$10$BNwXP8YdAeQqY97UD7mbG.9mVPJcJ4svg8c24hTSRIrEkLz3svpoS', 'Admin', 1, 1, 0),
-(3, 'bayu', '$2y$10$Enkpe.c8/S10pxohCwR9zO2mllq/28R0XW2wM51Ust1shR6tvWIBy', 'Bayu Prastyo', 1, 1, 0),
-(6, 'esti', '$2y$10$OyC8imde4RZ7NTSdfAD1Su47NtdMw/j72Wsl2bQWOsjcwnuLLru/O', 'Esti Setyaningrum', 1, 1, 0),
-(8, 'petugas', '$2y$10$reT1OGhCsOk9eiOjT/JSZenp.dUH3FeFwK0pdPBHDsgD1cyI3LREO', 'petugas', 2, 1, 0),
-(9, 'kepala', '$2y$10$bRa/K5sat5HIHZq51sEM4uUISJGHAo6ezIS.W9b7tYfbuw4/LpSvO', 'Kepala', 3, 1, 0),
-(12, 'estiwali', '$2y$10$Ibe54QaRxrHF7fTuQbzwRuPQapf4JnReQDteUQYMD6S6pNd33jLpe', 'Esti Setyaningrum', 4, 1, 8);
+(14, 'petugas', '$2y$10$vRWxKKVloghP2BGqnOjNMOGH81FpMPlO/RE4Ic8gJgoHSDe3uNqpa', 'petugas', 2, 1, 0),
+(15, 'kepala', '$2y$10$80cHyVt2t00EPhh6B.8Ii.y1uBtgMhzBj.TXNrFZEzh67a/TVT7.m', 'kepala', 3, 1, 0),
+(16, 'esti', '$2y$10$JBR/Qw5WkbKxwJliSF3HPu5wIQXS3v44q.LQdVYWTkdivcI7I315i', 'Esti Setyaningrum', 4, 1, 8);
 
 -- --------------------------------------------------------
 

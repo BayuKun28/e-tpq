@@ -86,15 +86,14 @@
                     $.ajaxSetup({
                         data: csfrData
                     });
-                    $(document).ready(function() {
-
-                    });
+                    $(document).ready(function() {});
 
                     function tampilkan() {
                         table = $('#mytable').DataTable({
 
                             "processing": true,
                             "serverSide": true,
+                            "pageLength": 12,
                             "order": [],
 
                             "ajax": {
