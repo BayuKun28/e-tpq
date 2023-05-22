@@ -81,4 +81,9 @@ class Pembayaran_model extends CI_Model
 						WHERE p.id = $id";
 		return $this->db->query($query)->row_array();
 	}
+	public function getnohpall()
+	{
+		$query = "SELECT  GROUP_CONCAT(w.no_hp)  as nohp FROM  wali w WHERE w.is_active =1";
+		return $this->db->query($query)->row_array();
+	}
 }

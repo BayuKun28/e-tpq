@@ -261,4 +261,18 @@ class Pembayaran extends CI_Controller
         $this->session->set_flashdata('message', 'Kwitansi Sukses');
         redirect('Pembayaran/Detail/' . $idsantri);
     }
+    public function reminder()
+    {
+        $token = "svwmn181lj1uzif6"; // Ultramsg.com token
+        $instance_id = "instance41358"; // Ultramsg.com instance id
+        $client = new UltraMsg\WhatsAppApi($token, $instance_id);
+        $nohp = $this->pembayaran_model->getnohpall();
+
+        $to = $nohp;
+        $body = "Selamat Siang, Mengingatkan Untuk Pembayaran Iuran Wajib Bulanan Hampir Jatuh Tempo, Dimohon Untuk Segera Membayar , Terimakasih";
+        $api = $client->sendChatMessage($to, $body);
+
+        $this->session->set_flashdata('message', 'Reminder');
+        redirect('Pembayaran/Data');
+    }
 }

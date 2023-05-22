@@ -25,7 +25,7 @@
                     <!-- Card header -->
                     <div class="card-header">
                         <h2 class="mb-0">Data Pembayaran</h2>
-                        <!-- <div class="text-right"><a href="<?= base_url('Pembayaran'); ?>" class="btn btn-success btn-sm-2 ">Tambah</a></div> -->
+                        <div class="text-right"><a href="<?= base_url('Pembayaran/reminder'); ?>" class="btn btn-danger btn-sm "><i class="fas fa-paper-plane"></i> Kirim Reminder Bayar</a></div>
                     </div>
                     <div class="table-responsive py-4 px-4">
                         <table id="mytable" class="table table-flush">

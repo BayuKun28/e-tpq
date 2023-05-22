@@ -81,6 +81,17 @@ if (!empty($this->session->flashdata('message'))) {
                                     }) 
                             </script>
                         ";
+                    } elseif ($pesan == "Reminder") {
+                        // die($pesan);
+                        $script = "
+                                    <script>
+                                            Swal.fire({
+                                              icon: 'success',
+                                              title: 'Data',
+                                              text: 'Berhasil Meningirim Reminder!'
+                                            }) 
+                                    </script>
+                                ";
     } else {
         $script =
             "
