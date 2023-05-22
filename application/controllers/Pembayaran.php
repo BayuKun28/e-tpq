@@ -51,36 +51,20 @@ class Pembayaran extends CI_Controller
         );
         $this->db->insert('pembayaran', $data);
         $this->session->set_flashdata('message', 'Berhasil Ditambah');
-        // send text
-        
+        // send text ultramsg
         $namabulan = $this->santri_model->getbulana($bulan)->nama;
         $nohp = $this->santri_model->getwaliwa($idpage)->no_hp;
         $santri = $this->santri_model->getwaliwa($idpage)->namasantri;
-        $token="fmpljh2eqxeztkmj"; // Ultramsg.com token
-        $instance_id="instance41358"; // Ultramsg.com instance id
-        $client = new UltraMsg\WhatsAppApi($token,$instance_id);
-            
-        $to=$nohp;
-        $body="Pembayaran Untuk Bulan ".$namabulan." Tahun ".$tahun." Sebesar Rp".$nominal1." Atas Nama Santri ".$santri." Sukses Dibayar Pada ".date('Y-m-d H:i:s')." dengan Keterangan ".$keterangan; 
-        $api=$client->sendChatMessage($to,$body);
-        // print_r($api);
+        $token = "svwmn181lj1uzif6"; // Ultramsg.com token
+        $instance_id = "instance41358"; // Ultramsg.com instance id
+        $client = new UltraMsg\WhatsAppApi($token, $instance_id);
 
-        // Send Picture
-
-        // $to="+628991907216"; 
-        // $caption="image Caption"; 
-        // $image="https://file-example.s3-accelerate.amazonaws.com/images/test.jpg"; 
-        // $api=$client->sendImageMessage($to,$image,$caption);
-        // print_r($api);
-
-        // $to="+6285845927512"; 
-        // $filename="image Caption"; 
-        // $document="https://file-example.s3-accelerate.amazonaws.com/documents/cv.pdf"; 
-        // $api=$client->sendDocumentMessage($to,$filename,$document);
-        // print_r($api);
+        $to = $nohp;
+        $body = "Pembayaran Untuk Bulan " . $namabulan . " Tahun " . $tahun . " Sebesar Rp" . $nominal1 . " Atas Nama Santri " . $santri . " Sukses Dibayar Pada " . date('Y-m-d H:i:s') . " dengan Keterangan " . $keterangan;
+        $api = $client->sendChatMessage($to, $body);
 
 
-        redirect('Pembayaran/Detail/'.$idpage);
+        redirect('Pembayaran/Detail/' . $idpage);
     }
 
     public function Data()
@@ -94,31 +78,31 @@ class Pembayaran extends CI_Controller
     }
 
     public function get_ajax_list()
-	{
-		$list = $this->santri_model->get_datatables();
-		$data = array();
-		$no = $_POST['start'];
-		foreach ($list as $d) {
-			$no++;
-			$row = array();
-			$row[] = $no;
+    {
+        $list = $this->santri_model->get_datatables();
+        $data = array();
+        $no = $_POST['start'];
+        foreach ($list as $d) {
+            $no++;
+            $row = array();
+            $row[] = $no;
 
-			$row[] = '<a href="'.base_url('Pembayaran/Detail/').$d->id.'" class="btn btn-success btn-sm">'.$d->nama.'</a>';
-			$row[] = $d->alamat;
+            $row[] = '<a href="' . base_url('Pembayaran/Detail/') . $d->id . '" class="btn btn-success btn-sm">' . $d->nama . '</a>';
+            $row[] = $d->alamat;
             $row[] = $d->namawali;
-			$row[] = '<a href="'.base_url('Pembayaran/Detail/').$d->id.'" class="btn btn-primary btn-block btn-sm"><i class="fas fa-eye"></i> Lihat / Bayar</a>';
-			$data[] = $row;
-		}
+            $row[] = '<a href="' . base_url('Pembayaran/Detail/') . $d->id . '" class="btn btn-primary btn-block btn-sm"><i class="fas fa-eye"></i> Lihat / Bayar</a>';
+            $data[] = $row;
+        }
 
-		$output = array(
-						"draw" => $_POST['draw'],
-						"recordsTotal" => $this->santri_model->count_all(),
-						"recordsFiltered" => $this->santri_model->count_filtered(),
-						"data" => $data,
-				);
-		//output to json format
-		echo json_encode($output);
-	}
+        $output = array(
+            "draw" => $_POST['draw'],
+            "recordsTotal" => $this->santri_model->count_all(),
+            "recordsFiltered" => $this->santri_model->count_filtered(),
+            "data" => $data,
+        );
+        //output to json format
+        echo json_encode($output);
+    }
 
     public function Detail()
     {
@@ -140,43 +124,41 @@ class Pembayaran extends CI_Controller
     }
 
     public function get_ajax_listdetail()
-	{
-		$list = $this->pembayaran_model->get_datatables();
-		$data = array();
-		$no = $_POST['start'];
-		foreach ($list as $d) {
-			$no++;
-			$row = array();
-			$row[] = $no;
-			$row[] = $d->bulan;
-            if($d->status == 'Dibayar')
-            {
-                $tampilstatus =  "<button type='button' class='btn btn-success btn-sm'><i class='fas fa-check-circle'></i> ".$d->status."</button>";
-            }else{
-                $tampilstatus =  "<button type='button' class='btn btn-danger btn-sm'><i class='fas fa-times-circle'></i> ".$d->status."</button>";
+    {
+        $list = $this->pembayaran_model->get_datatables();
+        $data = array();
+        $no = $_POST['start'];
+        foreach ($list as $d) {
+            $no++;
+            $row = array();
+            $row[] = $no;
+            $row[] = $d->bulan;
+            if ($d->status == 'Dibayar') {
+                $tampilstatus =  "<button type='button' class='btn btn-success btn-sm'><i class='fas fa-check-circle'></i> " . $d->status . "</button>";
+            } else {
+                $tampilstatus =  "<button type='button' class='btn btn-danger btn-sm'><i class='fas fa-times-circle'></i> " . $d->status . "</button>";
             }
-			$row[] = $tampilstatus;
-            $row[] = 'Rp'.number_format($d->nominal);
-            if($d->nominal != 0 )
-            {
-                $tampilaksi =  '<a href="javascript:void(0)" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modaledit" data-idedit="'.$d->id_pembayaran.'" data-bulanedit="'.$d->bulan.'" data-nominaledit="'.$d->nominal.'" data-keteranganedit="'.$d->keterangan.'" name="edit" id="edit"><i class="fa fa-edit"></i> Edit</a>
-                <a href="'.base_url('Pembayaran/cetakkwitansi?pembayaran=').$d->id_pembayaran.'" target="_blank" class="btn btn-danger btn-sm" name="print" id="print"><i class="fa fa-print"></i> Cetak Kwitansi</a><a href="'.base_url('Pembayaran/kirimkwitansi?pembayaran=').$d->id_pembayaran.'&idpage='.$d->id_santri.'" class="btn btn-warning btn-sm" name="print" id="print"><i class="fa fa-print"></i> Kirim Kwitansi</a>';
-            }else{
-                $tampilaksi =  '<a href="javascript:void(0)" class="btn btn-warning btn-sm" data-toggle="modal" data-target="#modalbayar" data-bulan="'.$d->bulan.'" data-id_bulan="'.$d->id_bulan.'" name="bayar" id="bayar"><i class="fa fa-money-bill-alt"></i> Bayar</a>';
+            $row[] = $tampilstatus;
+            $row[] = 'Rp' . number_format($d->nominal);
+            if ($d->nominal != 0) {
+                $tampilaksi =  '<a href="javascript:void(0)" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modaledit" data-idedit="' . $d->id_pembayaran . '" data-bulanedit="' . $d->bulan . '" data-nominaledit="' . $d->nominal . '" data-keteranganedit="' . $d->keterangan . '" name="edit" id="edit"><i class="fa fa-edit"></i> Edit</a>
+                <a href="' . base_url('Pembayaran/cetakkwitansi?pembayaran=') . $d->id_pembayaran . '" target="_blank" class="btn btn-danger btn-sm" name="print" id="print"><i class="fa fa-print"></i> Cetak Kwitansi</a><a href="' . base_url('Pembayaran/kirimkwitansi?pembayaran=') . $d->id_pembayaran . '&idpage=' . $d->id_santri . '" class="btn btn-warning btn-sm" name="print" id="print"><i class="fa fa-print"></i> Kirim Kwitansi</a>';
+            } else {
+                $tampilaksi =  '<a href="javascript:void(0)" class="btn btn-warning btn-sm" data-toggle="modal" data-target="#modalbayar" data-bulan="' . $d->bulan . '" data-id_bulan="' . $d->id_bulan . '" name="bayar" id="bayar"><i class="fa fa-money-bill-alt"></i> Bayar</a>';
             }
-			$row[] = $tampilaksi;
-			$data[] = $row;
-		}
+            $row[] = $tampilaksi;
+            $data[] = $row;
+        }
 
-		$output = array(
-						"draw" => $_POST['draw'],
-						"recordsTotal" => $this->pembayaran_model->count_all(),
-						"recordsFiltered" => $this->pembayaran_model->count_filtered(),
-						"data" => $data,
-				);
-		//output to json format
-		echo json_encode($output);
-	}
+        $output = array(
+            "draw" => $_POST['draw'],
+            "recordsTotal" => $this->pembayaran_model->count_all(),
+            "recordsFiltered" => $this->pembayaran_model->count_filtered(),
+            "data" => $data,
+        );
+        //output to json format
+        echo json_encode($output);
+    }
 
     public function edit()
     {
@@ -198,13 +180,13 @@ class Pembayaran extends CI_Controller
         $this->db->update('pembayaran', $data);
         $this->session->set_flashdata('message', 'Berhasil Di Update');
         // send text
-        $token="fmpljh2eqxeztkmj"; // Ultramsg.com token
-        $instance_id="instance41358"; // Ultramsg.com instance id
-        $client = new UltraMsg\WhatsAppApi($token,$instance_id);
-            
-        $to=$nohp;
-        $body="Pembayaran Untuk Bulan ".$namabulan." Tahun ".$tahun." Atas Nama Santri ".$santri." Telah Di Edit Pada ".date('Y-m-d H:i:s')." Sebesar Rp".$nominal1." dengan Keterangan ".$keterangan; 
-        $api=$client->sendChatMessage($to,$body);
+        $token = "svwmn181lj1uzif6"; // Ultramsg.com token
+        $instance_id = "instance41358"; // Ultramsg.com instance id
+        $client = new UltraMsg\WhatsAppApi($token, $instance_id);
+
+        $to = $nohp;
+        $body = "Pembayaran Untuk Bulan " . $namabulan . " Tahun " . $tahun . " Atas Nama Santri " . $santri . " Telah Di Edit Pada " . date('Y-m-d H:i:s') . " Sebesar Rp" . $nominal1 . " dengan Keterangan " . $keterangan;
+        $api = $client->sendChatMessage($to, $body);
         // print_r($api);
 
         // Send Picture
@@ -221,7 +203,7 @@ class Pembayaran extends CI_Controller
         // $api=$client->sendDocumentMessage($to,$filename,$document);
         // print_r($api);
 
-        redirect('Pembayaran/Detail/'.$idsantri);
+        redirect('Pembayaran/Detail/' . $idsantri);
     }
 
     public function cetakkwitansi()
@@ -233,28 +215,29 @@ class Pembayaran extends CI_Controller
         $data['detail'] = $this->pembayaran_model->kwitansi($id);
         $data['identitas'] = $this->auth_model->getIdentitas();
         $dompdf = new Dompdf();
-        $customPaper = array(0,0,480,240);
+        $customPaper = array(0, 0, 480, 240);
         $dompdf->set_paper($customPaper);
         $html = $this->load->view('pembayaran/kwitansi', $data, true);
         $dompdf->load_html($html);
         $dompdf->render();
-        $dompdf->stream('Kwitansi Pembayaran',array("Attachment" => false));
+        $dompdf->stream('Kwitansi Pembayaran', array("Attachment" => false));
     }
 
-    public function kirimkwitansi(){
-        $this->load->helper('file'); 
+    public function kirimkwitansi()
+    {
+        $this->load->helper('file');
 
         $id = $this->input->get('pembayaran');
         $idsantri = $this->input->get('idpage');
         $data['detail'] = $this->pembayaran_model->kwitansi($id);
         $data['identitas'] = $this->auth_model->getIdentitas();
-        $filename = dirname(__DIR__, 2).'\files\pdf\kwitansi.pdf';
+        $filename = dirname(__DIR__, 2) . '\files\pdf\kwitansi.pdf';
 
         $dompdf = new Dompdf();
-        $customPaper = array(0,0,480,240);
+        $customPaper = array(0, 0, 480, 240);
         $msg = $this->load->view('pembayaran/kwitansi', $data, true);
         $html = mb_convert_encoding($msg, 'HTML-ENTITIES', 'UTF-8');
-        $dompdf->load_html($html); 
+        $dompdf->load_html($html);
         $dompdf->set_paper($customPaper);
         $dompdf->render();
         file_put_contents($filename, $dompdf->output());
@@ -264,19 +247,18 @@ class Pembayaran extends CI_Controller
         $tahun = $this->santri_model->getpembayaran($id)->tahun;
         $namabulan = $this->santri_model->getpembayaran($id)->namabulan;
 
-        $token="fmpljh2eqxeztkmj"; // Ultramsg.com token
-        $instance_id="instance41358"; // Ultramsg.com instance id
-        $client = new UltraMsg\WhatsAppApi($token,$instance_id);
-            
-        $to=$nohp;
-        $filename="Kwitansi Bulan ".$namabulan." Tahun ".$tahun." Santri ".$santri; 
-        $document= dirname(__DIR__, 2).'\files\pdf\kwitansi.pdf';
+        $token = "svwmn181lj1uzif6"; // Ultramsg.com token
+        $instance_id = "instance41358"; // Ultramsg.com instance id
+        $client = new UltraMsg\WhatsAppApi($token, $instance_id);
+
+        $to = $nohp;
+        $filename = "Kwitansi Bulan " . $namabulan . " Tahun " . $tahun . " Santri " . $santri;
+        $document = dirname(__DIR__, 2) . '\files\pdf\kwitansi.pdf';
         $b64 = file_get_contents($document);
         $hasilb64 = base64_encode($b64);
 
-        $api=$client->sendDocumentMessage($to,$filename,$hasilb64);
+        $api = $client->sendDocumentMessage($to, $filename, $hasilb64);
         $this->session->set_flashdata('message', 'Kwitansi Sukses');
-        redirect('Pembayaran/Detail/'.$idsantri);
-
+        redirect('Pembayaran/Detail/' . $idsantri);
     }
 }
