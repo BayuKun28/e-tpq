@@ -4,7 +4,7 @@
     <div class="row align-items-center justify-content-lg-between">
         <div class="col-lg-6">
             <div class="copyright text-center text-lg-left text-muted">
-                &copy; 2022 <a href="https://github.com/BayuKun28" class="font-weight-bold ml-1" target="_blank">BayuKun</a>
+                &copy; 2023
             </div>
         </div>
     </div>

@@ -101,7 +101,6 @@
                 </div>
             </div>
         </div>
-    </div>
     <!-- Page content -->
     <!-- </div> -->
     <?php $this->load->view('templates/_foot'); ?>
