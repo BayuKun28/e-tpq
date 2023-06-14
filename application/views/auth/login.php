@@ -36,8 +36,8 @@
                 <div class="col-lg-5 col-md-7">
                     <div class="card bg-secondary">
                         <div class="card-header bg-transparent pb-2">
-                            <div class="btn-wrapper text-center p-2">
-                                <img class="card-img-top" src="<?= base_url('assets/'); ?>pngegg.png">
+                           <div class="btn-wrapper text-center p-2">
+                                <img class="card-img-top" src="<?= base_url('assets/'); ?>pngegg.png" style="width: 300px; height: auto;">
                             </div>
                             <div class="btn-wrapper text-center py-2">
                                 <?= $this->session->flashdata('message'); ?>
