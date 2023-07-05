@@ -114,6 +114,7 @@
                "orderable": false,
            },
            ],
+           autoWidth: false
    
        });
     }

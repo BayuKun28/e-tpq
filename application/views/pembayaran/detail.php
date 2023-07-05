@@ -200,6 +200,7 @@
             "orderable": false,
         },
         ],
+        autoWidth: false
 
     });
                           $(document).on('click', '#edit', function() {

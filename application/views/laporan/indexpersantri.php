@@ -109,7 +109,7 @@
                             "columnDefs": [{
                                 "targets": [0, 1, 2, 3, 4],
                                 "orderable": false,
-                            }, ],
+                            }, ],autoWidth: false
 
                         });
                         table.destroy();

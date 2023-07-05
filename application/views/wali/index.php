@@ -164,6 +164,7 @@ $(document).ready(function() {
             "orderable": false,
         },
         ],
+        autoWidth: false
 
     });
     $(document).on('click', '#editwali', function() {
