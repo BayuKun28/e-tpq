@@ -55,7 +55,7 @@ class Pembayaran extends CI_Controller
         $namabulan = $this->santri_model->getbulana($bulan)->nama;
         $nohp = $this->santri_model->getwaliwa($idpage)->no_hp;
         $santri = $this->santri_model->getwaliwa($idpage)->namasantri;
-        $token = "svwmn181lj1uzif6"; // Ultramsg.com token
+        $token = "mje4c0yfhdg372ql"; // Ultramsg.com token
         $instance_id = "instance41358"; // Ultramsg.com instance id
         $client = new UltraMsg\WhatsAppApi($token, $instance_id);
 
@@ -180,7 +180,7 @@ class Pembayaran extends CI_Controller
         $this->db->update('pembayaran', $data);
         $this->session->set_flashdata('message', 'Berhasil Di Update');
         // send text
-        $token = "svwmn181lj1uzif6"; // Ultramsg.com token
+        $token = "mje4c0yfhdg372ql"; // Ultramsg.com token
         $instance_id = "instance41358"; // Ultramsg.com instance id
         $client = new UltraMsg\WhatsAppApi($token, $instance_id);
 
@@ -247,7 +247,7 @@ class Pembayaran extends CI_Controller
         $tahun = $this->santri_model->getpembayaran($id)->tahun;
         $namabulan = $this->santri_model->getpembayaran($id)->namabulan;
 
-        $token = "svwmn181lj1uzif6"; // Ultramsg.com token
+        $token = "mje4c0yfhdg372ql"; // Ultramsg.com token
         $instance_id = "instance41358"; // Ultramsg.com instance id
         $client = new UltraMsg\WhatsAppApi($token, $instance_id);
 
@@ -263,7 +263,7 @@ class Pembayaran extends CI_Controller
     }
     public function reminder()
     {
-        $token = "svwmn181lj1uzif6"; // Ultramsg.com token
+        $token = "mje4c0yfhdg372ql"; // Ultramsg.com token
         $instance_id = "instance41358"; // Ultramsg.com instance id
         $client = new UltraMsg\WhatsAppApi($token, $instance_id);
         $nohp = $this->pembayaran_model->getnohpall();
