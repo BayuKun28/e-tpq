@@ -83,7 +83,7 @@ class Pembayaran_model extends CI_Model
 	}
 	public function getnohpall()
 	{
-		$query = "SELECT  GROUP_CONCAT(w.no_hp)  as nohp FROM  wali w WHERE w.is_active =1";
+		$query = "SELECT  GROUP_CONCAT(DISTINCT w.no_hp)  as nohp FROM  wali w WHERE w.is_active = 1 AND w.id IN (SELECT s.id_wali FROM santri s WHERE s.is_active = 1)";
 		return $this->db->query($query)->row_array();
 	}
 }

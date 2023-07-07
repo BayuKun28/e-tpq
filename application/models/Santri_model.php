@@ -8,6 +8,10 @@ class Santri_model extends CI_Model
 
 	private function _get_datatables_query()
 	{
+		if($this->input->post('status'))
+		{
+			$this->db->where('santri.is_active', $this->input->post('status'));
+		}
 		$this->db->select('santri.*,wali.nama as namawali');
 		$this->db->from('santri');
 		$this->db->join('wali', 'santri.id_wali = wali.id', 'left');
@@ -33,6 +37,7 @@ class Santri_model extends CI_Model
 		$this->_get_datatables_query();
 		if ($_POST['length'] != -1)
 			$this->db->limit($_POST['length'], $_POST['start']);
+		$this->db->last_query();
 		$query = $this->db->get();
 		return $query->result();
 	}
@@ -104,5 +109,50 @@ class Santri_model extends CI_Model
 	{
 		$query = "SELECT p.*,b.nama as namabulan FROM pembayaran p LEFT JOIN bulan b on b.id = p.bulan WHERE p.id = '$id' ";
 		return $this->db->query($query)->row();
+	}
+
+	private function _get_datatables_querypembayaran()
+	{
+		$this->db->select('santri.*,wali.nama as namawali');
+		$this->db->from('santri');
+		$this->db->join('wali', 'santri.id_wali = wali.id', 'left');
+		$this->db->where('santri.is_active', 1);
+		$i = 0;
+		foreach ($this->colum_search_santri as $item) {
+			if ($_POST['search']['value']) {
+				if ($i === 0) {
+					$this->db->group_start();
+					$this->db->like($item, $_POST['search']['value']);
+				} else {
+					$this->db->or_like($item, $_POST['search']['value']);
+				}
+
+				if (count($this->colum_search_santri) - 1 == $i)
+					$this->db->group_end();
+			}
+			$i++;
+		}
+	}
+	function get_datatablespembayaran()
+	{
+		$this->db->order_by('santri.id', 'desc');
+		$this->_get_datatables_querypembayaran();
+		if ($_POST['length'] != -1)
+			$this->db->limit($_POST['length'], $_POST['start']);
+		$this->db->last_query();
+		$query = $this->db->get();
+		return $query->result();
+	}
+	public function count_filteredpembayaran()
+	{
+		$this->_get_datatables_querypembayaran();
+		$query = $this->db->get();
+		return $query->num_rows();
+	}
+
+	public function count_allpembayaran()
+	{
+		$this->db->from($this->table);
+		return $this->db->count_all_results();
 	}
 }

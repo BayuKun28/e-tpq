@@ -79,7 +79,7 @@ class Pembayaran extends CI_Controller
 
     public function get_ajax_list()
     {
-        $list = $this->santri_model->get_datatables();
+        $list = $this->santri_model->get_datatablespembayaran();
         $data = array();
         $no = $_POST['start'];
         foreach ($list as $d) {
@@ -96,8 +96,8 @@ class Pembayaran extends CI_Controller
 
         $output = array(
             "draw" => $_POST['draw'],
-            "recordsTotal" => $this->santri_model->count_all(),
-            "recordsFiltered" => $this->santri_model->count_filtered(),
+            "recordsTotal" => $this->santri_model->count_allpembayaran(),
+            "recordsFiltered" => $this->santri_model->count_filteredpembayaran(),
             "data" => $data,
         );
         //output to json format

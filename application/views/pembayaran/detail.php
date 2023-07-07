@@ -119,11 +119,11 @@
                                         </div>
                                         <div class="form-group">
                                             <label>Nominal Pembayaran</label>
-                                            <input class="form-control" type="text" id="nominaledit" name="nominaledit" required>
+                                            <input class="form-control" type="text" id="nominaledit" name="nominaledit" value="<?= $detail['nominal']; ?>" readonly required>
                                         </div>
                                         <div class="form-group">
                                             <label>Keterangan</label>
-                                            <textarea class="form-control" id="keteranganedit" name="keteranganedit" required></textarea>
+                                            <textarea class="form-control" id="keteranganedit" name="keteranganedit" readonly required>LUNAS</textarea>
                                         </div>
                                         
                                     </div>
@@ -155,11 +155,11 @@
                                         </div>
                                         <div class="form-group">
                                             <label>Nominal Pembayaran</label>
-                                            <input class="form-control" type="text" id="nominal" name="nominal" required>
+                                            <input class="form-control" type="text" id="nominal" name="nominal" value="<?= $detail['nominal']; ?>" readonly required>
                                         </div>
                                         <div class="form-group">
                                             <label>Keterangan</label>
-                                            <textarea class="form-control" id="keterangan" name="keterangan" required></textarea>
+                                            <textarea class="form-control" id="keterangan" name="keterangan" readonly required>LUNAS</textarea>
                                         </div>
                                         
                                     </div>

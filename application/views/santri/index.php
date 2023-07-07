@@ -25,7 +25,25 @@
                     <!-- Card header -->
                     <div class="card-header">
                         <h2 class="mb-0">Data Santri</h2>
-                        <div class="text-right"><a href="#" class="btn btn-success btn-sm-2 " data-toggle="modal" data-target="#modaltambah">Tambah</a></div>
+                        <br>
+                        <div class="row col-md-8 align-items-center">
+                            <div class="col">
+                                <div class="form-group">
+                                    <label>Status Santri</label>
+                                    <select class="form-control" id="status" name="status" required>
+                                        <option value="">Semua</option>
+                                        <option value="1">Aktif</option>
+                                        <option value="2">Alumni</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row align-items-center">
+                                <div class="col-md-12">
+                                    <button type="button" class="btn btn-success btn-sm-2 " id="btnTampil" name="btnTampil">Tampilkan</button>
+                                    <a href="#" class="btn btn-primary btn-sm-2 " data-toggle="modal" data-target="#modaltambah" id="btnTambah" name="btnTambah">Tambah</a>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <div class="table-responsive py-4 px-4">
                         <table id="mytable" class="table table-flush">
@@ -37,6 +55,7 @@
                                     <th>Alamat</th>
                                     <th>Wali Santri</th>
                                     <th>Jenis Kelamin</th>
+                                    <th>Nominal</th>
                                     <th>Actions</th>
                                 </tr>
                             </thead>
@@ -48,11 +67,12 @@
                                     <th>Alamat</th>
                                     <th>Wali Santri</th>
                                     <th>Jenis Kelamin</th>
+                                    <th>Nominal</th>
                                     <th>Actions</th>
                                 </tr>
                             </tfoot>
                             <tbody>
-                                
+
                             </tbody>
                         </table>
                     </div>
@@ -94,10 +114,14 @@
                                             </select>
                                         </div>
                                         <div class="form-group">
-                                            <label>Aktif ?</label>
+                                            <label>Nominal IWB</label>
+                                            <input type="text" class="form-control" name="nominaledit" id="nominaledit" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Status</label>
                                             <select class="form-control" id="is_activeedit" name="is_activeedit" required>
-                                                <option value="1">Ya</option>
-                                                <option value="0">Tidak</option>
+                                                <option value="1">Aktif</option>
+                                                <option value="2">Alumni</option>
                                             </select>
                                         </div>
                                     </div>
@@ -146,10 +170,14 @@
                                             </select>
                                         </div>
                                         <div class="form-group">
-                                            <label>Aktif ?</label>
+                                            <label>Nominal IWB</label>
+                                            <input type="text" class="form-control" name="nominal" id="nominal" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Status</label>
                                             <select class="form-control" id="is_active" name="is_active" required>
-                                                <option value="1">Ya</option>
-                                                <option value="0">Tidak</option>
+                                                <option value="1">Aktif</option>
+                                                <option value="2">Alumni</option>
                                             </select>
                                         </div>
                                     </div>
@@ -163,42 +191,52 @@
                     </div>
                     <?php $this->load->view('templates/_foot'); ?>
                     <script type="application/javascript">
-var save_method;
-var table;
-var csfrData = {};
-csfrData['<?php echo $this->security->get_csrf_token_name(); ?>'] = '<?php echo
-$this->security->get_csrf_hash(); ?>';
-$.ajaxSetup({
-data: csfrData
-});
-$(document).ready(function() {
+                        var save_method;
+                        var table;
+                        var csfrData = {};
+                        csfrData['<?php echo $this->security->get_csrf_token_name(); ?>'] = '<?php echo
+                                                                                                $this->security->get_csrf_hash(); ?>';
+                        $.ajaxSetup({
+                            data: csfrData
+                        });
+                        $(document).ready(function() {
 
-    //datatables
-    table = $('#mytable').DataTable({
+                            //datatables
+                            table = $('#mytable').DataTable({
 
-        "processing": true,
-        "serverSide": true,
-        "order": [],
+                                "processing": true,
+                                "serverSide": true,
+                                "order": [],
 
-        "ajax": {
-            "url": "<?php echo site_url('Santri/get_ajax_list')?>",
-            "type": "POST",
-            "data": function ( data ) {
-            }
-        },
+                                "ajax": {
+                                    "url": "<?php echo site_url('Santri/get_ajax_list') ?>",
+                                    "type": "POST",
+                                    "data": function(data) {
+                                        data.status = $("#status").val();
+                                    }
+                                },
 
 
-        "columnDefs": [
-        {
-            "targets": [ 0,1,2,3,4,5,6 ],
-            "orderable": false,
-        },
-        ],
-        autoWidth: false
+                                "columnDefs": [{
+                                    "targets": [0, 1, 2, 3, 4, 5, 6, 7],
+                                    "orderable": false,
+                                }, ],
+                                autoWidth: false
 
-    });
-    $(document).on('click', '#editsantri', function() {
-                                var idedit = $(this).data('idedit'); 
+                            });
+
+                            $("#btnTampil").on("click", function() {
+                                table.ajax.reload();
+                            });
+
+                            $(document).on('click', '#btnTambah', function() {
+                                $('#nominal').mask('#,##0,000', {
+                                    reverse: true
+                                });
+                            })
+
+                            $(document).on('click', '#editsantri', function() {
+                                var idedit = $(this).data('idedit');
                                 var namaedit = $(this).data('namaedit');
                                 var tanggal_lahiredit = $(this).data('tanggal_lahiredit');
                                 var alamatedit = $(this).data('alamatedit');
@@ -206,11 +244,16 @@ $(document).ready(function() {
                                 var namawaliedit = $(this).data('namawaliedit');
                                 var jkedit = $(this).data('jkedit');
                                 var is_activeedit = $(this).data('is_activeedit');
+                                var nominaledit = $(this).data('nominaledit');
                                 $('#idedit').val(idedit);
                                 $('#namaedit').val(namaedit);
                                 $('#tanggal_lahiredit').val(tanggal_lahiredit);
                                 $('#alamatedit').val(alamatedit);
                                 $('#jkedit').val(jkedit);
+                                $('#nominaledit').val(nominaledit);
+                                $('#nominaledit').mask('#,##0,000', {
+                                    reverse: true
+                                });
                                 $('#is_activeedit').val(is_activeedit);
 
                                 var $hasilwali = $("<option selected='selected'></option>").val(id_waliedit).text(namawaliedit)
@@ -238,7 +281,7 @@ $(document).ready(function() {
                                     window.location.href = delete_url;
                                 }
                             });
-});
+                        });
 
                         $('.itemWali').select2({
                             width: '100%',
@@ -265,4 +308,4 @@ $(document).ready(function() {
                                 }
                             }
                         });
-</script>
+                    </script>

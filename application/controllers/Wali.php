@@ -24,32 +24,32 @@ class Wali extends CI_Controller
     }
 
     public function get_ajax_list()
-	{
-		$list = $this->wali_model->get_datatables();
-		$data = array();
-		$no = $_POST['start'];
-		foreach ($list as $d) {
-			$no++;
-			$row = array();
-			$row[] = $no;
+    {
+        $list = $this->wali_model->get_datatables();
+        $data = array();
+        $no = $_POST['start'];
+        foreach ($list as $d) {
+            $no++;
+            $row = array();
+            $row[] = $no;
 
-			$row[] = $d->nama;
-			$row[] = $d->alamat;
+            $row[] = $d->nama;
+            $row[] = $d->alamat;
             $row[] = $d->no_hp;
-			$row[] = '<a href="javascript:void(0)" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modaleditwali" data-idedit="'.$d->id.'" data-namaedit="'.$d->nama.'" data-alamatedit="'.$d->alamat.'" data-no_hpedit="'.$d->no_hp.'" data-is_activeedit="'.$d->is_active.'" name="editwali" id="editwali"><i class="fa fa-edit"></i></a>
-            <a data-kode="'.$d->id.'" href="javascript:void(0)" class="del_wali btn btn-danger btn-sm"><i class="fa fa-trash"></i></a>';
-			$data[] = $row;
-		}
+            $row[] = '<a href="javascript:void(0)" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modaleditwali" data-idedit="' . $d->id . '" data-namaedit="' . $d->nama . '" data-alamatedit="' . $d->alamat . '" data-no_hpedit="' . $d->no_hp . '" data-is_activeedit="' . $d->is_active . '" name="editwali" id="editwali"><i class="fa fa-edit"></i></a>
+            <a data-kode="' . $d->id . '" href="javascript:void(0)" class="del_wali btn btn-danger btn-sm"><i class="fa fa-trash"></i></a>';
+            $data[] = $row;
+        }
 
-		$output = array(
-						"draw" => $_POST['draw'],
-						"recordsTotal" => $this->wali_model->count_all(),
-						"recordsFiltered" => $this->wali_model->count_filtered(),
-						"data" => $data,
-				);
-		//output to json format
-		echo json_encode($output);
-	}
+        $output = array(
+            "draw" => $_POST['draw'],
+            "recordsTotal" => $this->wali_model->count_all(),
+            "recordsFiltered" => $this->wali_model->count_filtered(),
+            "data" => $data,
+        );
+        //output to json format
+        echo json_encode($output);
+    }
 
     public function addwali()
     {
@@ -70,11 +70,23 @@ class Wali extends CI_Controller
 
     public function delete($id)
     {
-        $this->db->where('id', $id);
-        $this->db->delete('wali');
-        $this->session->set_flashdata('message', 'Berhasil Dihapus');
+        $sql = "SELECT COUNT(*) as count FROM santri WHERE id_wali = ?";
+        $query = $this->db->query($sql, array($id));
+        $result = $query->row();
+
+        if ($result->count > 0) {
+            // Jika ada data dengan $id di tabel "santri"
+            $this->session->set_flashdata('message', 'walifound');
+        } else {
+            // Jika tidak ada data dengan $id di tabel "santri", lakukan penghapusan
+            $this->db->where('id', $id);
+            $this->db->delete('wali');
+            $this->session->set_flashdata('message', 'Berhasil Dihapus');
+        }
+
         redirect('Wali');
     }
+
 
     public function editwali()
     {

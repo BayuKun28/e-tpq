@@ -35,10 +35,11 @@ class Santri extends CI_Controller
 
             $row[] = $d->nama;
             $row[] = format_indo(date($d->tanggal_lahir));
-            $row[] = $d->alamat;
+            $row[] = $d->alamat; 
             $row[] = $d->namawali;
             $row[] = $d->jk;
-            $row[] = '<a href="javascript:void(0)" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modaleditsantri" data-idedit="' . $d->id . '" data-namaedit="' . $d->nama . '" data-tanggal_lahiredit="' . $d->tanggal_lahir . '" data-alamatedit="' . $d->alamat . '" data-jkedit="' . $d->jk . '" data-id_waliedit="' . $d->id_wali . '" data-namawaliedit="' . $d->namawali . '" data-is_activeedit="' . $d->is_active . '" name="editsantri" id="editsantri"><i class="fa fa-edit"></i></a>
+            $row[] = 'Rp' . number_format($d->nominal);
+            $row[] = '<a href="javascript:void(0)" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modaleditsantri" data-idedit="' . $d->id . '" data-namaedit="' . $d->nama . '" data-tanggal_lahiredit="' . $d->tanggal_lahir . '" data-alamatedit="' . $d->alamat . '" data-jkedit="' . $d->jk . '" data-id_waliedit="' . $d->id_wali . '" data-namawaliedit="' . $d->namawali . '" data-is_activeedit="' . $d->is_active . '" data-nominaledit="' . $d->nominal . '" name="editsantri" id="editsantri"><i class="fa fa-edit"></i></a>
             <a data-kode="' . $d->id . '" href="javascript:void(0)" class="del_santri btn btn-danger btn-sm"><i class="fa fa-trash"></i></a>';
             $data[] = $row;
         }
@@ -84,12 +85,15 @@ class Santri extends CI_Controller
 
     public function addsantri()
     {
+        $nominal1 = $this->input->post('nominal');
+        $nominal = str_replace(',', '', $nominal1);
         $data = array(
             'nama' => $this->input->post('nama'),
             'alamat' => $this->input->post('alamat'),
             'tanggal_lahir' => $this->input->post('tanggal_lahir'),
             'id_wali' => $this->input->post('id_wali'),
             'jk' => $this->input->post('jk'),
+            'nominal' => $nominal,
             'is_active' => $this->input->post('is_active')
         );
         $this->db->insert('santri', $data);
@@ -107,6 +111,8 @@ class Santri extends CI_Controller
 
     public function editsantri()
     {
+        $nominal1 = $this->input->post('nominaledit');
+        $nominal = str_replace(',', '', $nominal1);
         $id = $this->input->post('idedit');
         $data = array(
             'nama' => $this->input->post('namaedit'),
@@ -114,6 +120,7 @@ class Santri extends CI_Controller
             'tanggal_lahir' => $this->input->post('tanggal_lahiredit'),
             'id_wali' => $this->input->post('id_waliedit'),
             'jk' => $this->input->post('jkedit'),
+            'nominal' => $nominal,
             'is_active' => $this->input->post('is_activeedit')
         );
         $this->db->where('id', $id);

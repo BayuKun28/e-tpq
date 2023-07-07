@@ -70,9 +70,9 @@ if (!empty($this->session->flashdata('message'))) {
                             }) 
                     </script>
                 ";
-            } elseif ($pesan == "Kwitansi Sukses") {
-                // die($pesan);
-                $script = "
+    } elseif ($pesan == "Kwitansi Sukses") {
+        // die($pesan);
+        $script = "
                             <script>
                                     Swal.fire({
                                       icon: 'success',
@@ -81,9 +81,9 @@ if (!empty($this->session->flashdata('message'))) {
                                     }) 
                             </script>
                         ";
-                    } elseif ($pesan == "Reminder") {
-                        // die($pesan);
-                        $script = "
+    } elseif ($pesan == "Reminder") {
+        // die($pesan);
+        $script = "
                                     <script>
                                             Swal.fire({
                                               icon: 'success',
@@ -92,6 +92,17 @@ if (!empty($this->session->flashdata('message'))) {
                                             }) 
                                     </script>
                                 ";
+    } elseif ($pesan == "walifound") {
+        // die($pesan);
+        $script = "
+                                                            <script>
+                                                                    Swal.fire({
+                                                                      icon: 'error',
+                                                                      title: 'Data',
+                                                                      text: 'Wali Masih Terhubung Dengan Santri!'
+                                                                    }) 
+                                                            </script>
+                                                        ";
     } else {
         $script =
             "
